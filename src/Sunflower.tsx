@@ -1,23 +1,32 @@
-import _ from 'lodash'
+import * as _ from 'lodash'
+import * as React from 'react'
 import * as d3 from 'd3'
-import 'd3-random'
 import * as d3_chromatic from 'd3-scale-chromatic'
 import {hexbin as d3_hexbin} from 'd3-hexbin'
-import Resizable from 'react-component-resizable'
-import React, {Component} from 'react'
 import {observer} from 'mobx-react'
 import {computed, observable, action} from 'mobx'
 import {bind} from 'decko'
-import styles from './Homepage.css'
 
-function getDistance(a, b) {
+declare var require: any
+const styles = require('./Homepage.css')
+const Resizable = require('react-component-resizable').default
+
+interface Vector2 {
+    x: number,
+    y: number
+}
+
+function getDistance(a: Vector2, b: Vector2) {
     return Math.sqrt((b.x-a.x)*(b.x-a.x) + (b.y-a.y)*(b.y-a.y))
 }
 
 class Ripple {
-    @observable radius
+    @observable radius: number
+    origin: Vector2
+    colorScale: d3.ScaleSequential<string>
+    priority: number
 
-    constructor({origin, colorScale, radius, priority}) {
+    constructor({origin, colorScale, radius, priority}: { origin: Vector2, colorScale: d3.ScaleSequential<string>, radius: number, priority: number}) {
         this.origin = origin
         this.colorScale = colorScale
         this.radius = radius
@@ -26,14 +35,14 @@ class Ripple {
 }
 
 @observer
-class SunflowerMain extends Component {
-    colorScales = _(d3_chromatic).keys().filter(k => k.indexOf('interpolate') !== -1).map(k => d3_chromatic[k]).value()
+class SunflowerMain extends React.Component<{ x: number, y: number, size: number }> {
+    colorScales: d3.ScaleSequential<string>[] = _(d3_chromatic).keys().filter(k => k.indexOf('interpolate') !== -1).map(k => (d3_chromatic as any)[k]).value()
     colorScalesIndex = 0
     @observable rotation = +(new Date())/1000000000//0.1952444
     @observable isPlaying = true
     @observable bbox = null
     @observable mouse = { x: 0, y: 0 }
-    @observable ripples = []
+    @observable ripples: Ripple[] = []
     @observable ripplePriority = 0
 
     @computed get size() {
@@ -44,11 +53,18 @@ class SunflowerMain extends Component {
         return Math.PI * (3 - Math.sqrt(5))
     }
 
+    offscreenCanvas: HTMLCanvasElement
+    ctx: CanvasRenderingContext2D
+    base: HTMLCanvasElement
+    finalCtx: CanvasRenderingContext2D
+    points: {x: number, y: number, color?: string, colorPriority?: number}[]
+    isMouseDown: boolean = false
+
     constructor() {
         super()
         this.points = d3.range(1000).map(i => {return { x: 0, y: 0 }})
         this.offscreenCanvas = document.createElement('canvas')
-        this.ctx = this.offscreenCanvas.getContext('2d')
+        this.ctx = this.offscreenCanvas.getContext('2d') as CanvasRenderingContext2D
     }
 
     updatePoints() {
@@ -66,12 +82,9 @@ class SunflowerMain extends Component {
             points[i].y = y
         }
     }
-π
-    @action componentDidMount() {
-        this.finalCtx = this.base.getContext('2d')
-//        this.updatePoints()
-//        this.circles = d3.select(this.base).selectAll('circle')
 
+    @action componentDidMount() {
+        this.finalCtx = this.base.getContext('2d') as CanvasRenderingContext2D
         this.componentDidUpdate()
         requestAnimationFrame(this.frame)
     }
@@ -116,7 +129,6 @@ class SunflowerMain extends Component {
         this.expandRipples()
 
         const {ctx, size, points, ripples} = this
-        window.ctx = ctx
 
         ctx.clearRect(0, 0, this.base.width, this.base.height);
 
@@ -135,18 +147,18 @@ class SunflowerMain extends Component {
         requestAnimationFrame(this.frame)
     }
 
-    @action.bound onMouseDown(e) {
+    @action.bound onMouseDown(e: React.MouseEvent<HTMLCanvasElement>|React.TouchEvent<HTMLCanvasElement>) {
         e.preventDefault();
 
-        this.mouseDown = true
+        this.isMouseDown = true
         this.onMouseMove(e)
     }
 
     @action.bound onMouseUp() {
-        this.mouseDown = false
+        this.isMouseDown = false
     }
 
-    @action.bound onMouseMove(e) {
+    @action.bound onMouseMove(e: any) {
         e.preventDefault()
 
         const rect = e.target.getBoundingClientRect()
@@ -158,7 +170,8 @@ class SunflowerMain extends Component {
 
         const {size} = this
 
-        if (this.mouseDown && (this.ripples.length == 0 || _.last(this.ripples).radius > size/8))
+        const lastRipple = _.last(this.ripples)
+        if (this.isMouseDown && (!lastRipple || lastRipple.radius > size/8))
             this.ripple()
     }
 
@@ -171,7 +184,7 @@ class SunflowerMain extends Component {
 
         if (this.ripples.length >= 50)
             this.ripples = this.ripples.slice(1)
-
+        
         this.ripples.push(new Ripple({
             origin: closestPointToMouse,
             colorScale: d3.scaleSequential(colorScales[colorScalesIndex]).domain([0, this.size*0.75]),
@@ -192,12 +205,9 @@ class SunflowerMain extends Component {
 }
 
 @observer
-export default class Sunflower extends Component {
-    @observable size
-
-    constructor() {
-        super()
-    }
+export default class Sunflower extends React.Component {
+    @observable size: number
+    base: HTMLDivElement
 
     componentDidMount() {
         this.onResize()

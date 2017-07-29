@@ -9,18 +9,18 @@ import fs from 'fs'
 import fm from 'front-matter'
 
 const isProduction = process.argv.indexOf('-p') !== -1;
-const postSlugs = fs.readdirSync(path.join(__dirname, 'posts')).filter(file => !file.match(/.jsx$/))
+const postSlugs = fs.readdirSync(path.join(__dirname, 'posts')).filter(file => !file.match(/.tsx$/))
 
 export default {
     context: __dirname,    
-    entry: path.join(__dirname, 'src/index.jsx'),
+    entry: path.join(__dirname, 'src/index.tsx'),
     output: {
         path: path.join(__dirname, 'build'),
         filename: (isProduction ? 'assets/mispy.[chunkhash].js' : 'assets/mispy.js'),
         libraryTarget: 'umd'
     },
     resolve: {
-        extensions: [".js", ".jsx", ".css"],
+        extensions: [".js", ".jsx", ".ts", ".tsx", ".css"],
         alias: {
             'react': 'preact-compat',
             'react-dom': 'preact-compat'
@@ -28,6 +28,10 @@ export default {
     },
     module: {
         rules: [
+            {
+                test: /\.tsx?$/,
+                loader: "awesome-typescript-loader"
+            },
             {
                 test: /preact-compat|\.jsx$/,
                 use: "babel-loader",
@@ -76,8 +80,9 @@ export default {
 
         // Copy the post assets (images and such)
         new CopyWebpackPlugin([
-            { context: 'posts', from: '**/*' }
-        ], { ignore: ['index.jsx'] })
+            { context: 'posts', from: '**/*' },
+            { context: 'content', from: '**/*' }
+        ], { ignore: ['index.tsx'] })
     ].concat(isProduction ? [
         new OptimizeCssAssetsPlugin({
             assetNameRegExp: /\.bundle.*\.css$/,

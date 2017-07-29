@@ -1,7 +1,8 @@
 import * as _ from 'lodash'
 
-function requireAll(requireContext) {
-  return requireContext.keys().map(key => {
+declare var require: any
+function requireAll(requireContext: any): any[] {
+  return requireContext.keys().map((key: string) => {
     var obj = requireContext(key)
     obj.slug = key.split('/')[1]
     return obj

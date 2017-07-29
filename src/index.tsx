@@ -1,18 +1,20 @@
 //import 'babel-polyfill'
-import React, {Component} from 'react'
-import {renderToString} from 'react-dom/server'
+import * as React from 'react'
+import * as ReactDOMServer from 'react-dom/server'
+import {Helmet, HelmetData} from 'react-helmet'
 import Homepage from './Homepage'
 import Post from './Post'
-import Helmet from 'react-helmet'
-import faviconImg from './favicon.png'
-import sunflowerImg from './sunflower.png'
 
-class Body extends Component {
+declare var require: any
+const faviconImg = require('./favicon.png')
+const sunflowerImg = require('./sunflower.png')
+
+class Body extends React.Component<{path: string, assets: string[]}> {
     content() {
         const {path} = this.props
 
         if (path == "/") {
-            return <Homepage class="homepage"/>
+            return <Homepage isClient={false}/>
         } else {
             return <Post params={{slug: path.replace('/', '')}}/>
         }           
@@ -32,7 +34,7 @@ class Body extends Component {
     }
 }
 
-class Head extends Component {
+class Head extends React.Component<{path: string, assets: string[], head: HelmetData}> {
     render() {
         const {head, assets, path} = this.props
         const css = assets.filter(value => value.match(/\.css$/))
@@ -41,7 +43,6 @@ class Head extends Component {
 
         return <head>
             {head.title.toComponent()}
-            <meta charset="UTF-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
             <meta name="description" content={description}/>
             <meta name="twitter:title" content={head.title.toString()}/>
@@ -66,11 +67,11 @@ class Head extends Component {
     }
 }
 
-export default (locals, callback) => {
+export default (locals: any, callback: (val: null, html: string) => void) => {
     const assets = Object.keys(locals.webpackStats.compilation.assets)
-    const bodyStr = renderToString(<Body path={locals.path} assets={assets}/>)
-    const head = Helmet.rewind()
-    const headStr = renderToString(<Head path={locals.path} head={head} assets={assets}/>)
+    const bodyStr = ReactDOMServer.renderToString(<Body path={locals.path} assets={assets}/>)
+    const head = Helmet.renderStatic()
+    const headStr = ReactDOMServer.renderToString(<Head path={locals.path} head={head} assets={assets}/>)
 
     callback(null, "<html>"+headStr+bodyStr+"</html>")
 };
