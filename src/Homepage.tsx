@@ -10,6 +10,7 @@ declare var require: any
 const styles = require('./Homepage.css')
 const mispyImg = require('./mispy.png')
 const sunflowerImg = require('./sunflower.png')
+const owidImg = require('./owid.png')
 
 declare var window: any
 window.homepageStart = function() {
@@ -36,7 +37,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                 <h2>Current Project</h2>
                 <hr/>
                 <div className="project">
-                    <a href="https://ourworldindata.org" target="_blank"><img src="https://ourworldindata.org/wp-content/uploads/2016/06/OurWorldInData.png"/></a>
+                    <a href="https://ourworldindata.org" target="_blank"><img src={owidImg}/></a>
                     <p>Since 2016 I have been working with <a href="https://maxroser.com">Max Roser</a> and the <a href="http://www.oxfordmartin.ox.ac.uk/">Oxford Martin School</a> on <a href="https://ourworldindata.org">Our World In Data</a>. This project aims to make verifiable quantitative information about issues of global importance accessible and freely available to all of humanity.</p>
                 </div>
             </section>
