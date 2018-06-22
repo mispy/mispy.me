@@ -38,7 +38,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                 <hr/>
                 <div className="project">
                     <a href="https://ourworldindata.org" target="_blank"><img src={owidImg}/></a>
-                    <p>Since 2016 I have been working with <a href="https://maxroser.com">Max Roser</a> and the <a href="http://www.oxfordmartin.ox.ac.uk/">Oxford Martin School</a> on <a href="https://ourworldindata.org">Our World In Data</a>. This project aims to make verifiable quantitative information about issues of global importance accessible and freely available to all of humanity.</p>
+                    <p>Since 2016 I have been working with a great team at the <a href="http://www.oxfordmartin.ox.ac.uk/">Oxford Martin School</a> on <a href="https://ourworldindata.org">Our World in Data</a>. Our goal is to make reliable information about important global issues accessible and freely available to all of humanity.</p>
                 </div>
             </section>
             <section className={styles.contact}>
@@ -55,8 +55,8 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                 <a href="mailto:jaiden@mispy.me">jaiden@mispy.me</a>
                 <div className={styles.socialLinks}>
                     <a href="https://twitter.com/m1sp" target="_blank"><i className="fa fa-twitter"/></a>
-                    <a href="https://facebook.com/misprime" target="_blank"><i className="fa fa-facebook"/></a>
                     <a href="https://github.com/mispy" target="_blank"><i className="fa fa-github"/></a>
+                    <a href="https://facebook.com/misprime" target="_blank"><i className="fa fa-facebook"/></a>
                 </div>            
             </footer>
             <script async dangerouslySetInnerHTML={{__html: "window.homepageStart()"}}></script>
