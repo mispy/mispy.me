@@ -1,4 +1,3 @@
-//import 'babel-polyfill'
 import * as React from 'react'
 import * as ReactDOMServer from 'react-dom/server'
 import {Helmet, HelmetData} from 'react-helmet'
@@ -29,7 +28,9 @@ class Body extends React.Component<{path: string, assets: string[]}> {
             {js.map(path =>
                 <script src={'/'+path}/>  
             )}
-            {this.content()}
+            <div id="app">  
+                {this.content()}
+            </div>
         </body>
     }
 }

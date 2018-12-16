@@ -8,9 +8,8 @@ import posts from '../posts'
 import Helmet from 'react-helmet'
 
 declare var require: any
-const styles = require('./index.css')
+const styles = require('./index.scss')
 const mispy = require('./mispy.png')
-
 
 export default class Post extends React.Component<{params: {slug: string}}> {   
     render() {

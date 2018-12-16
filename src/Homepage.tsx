@@ -2,19 +2,17 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {observable, computed, action} from 'mobx'
 import {observer} from 'mobx-react'
-import * as moment from 'moment'
-import Link from './Link'
 import Sunflower from './Sunflower'
 
 declare var require: any
-const styles = require('./Homepage.css')
+const styles = require('./Homepage.scss')
 const mispyImg = require('./mispy.png')
 const sunflowerImg = require('./sunflower.png')
 const owidImg = require('./owid.png')
 
 declare var window: any
 window.homepageStart = function() {
-    ReactDOM.render(<Homepage isClient={true}/>, document.body)
+    ReactDOM.render(<Homepage isClient={true}/>, document.querySelector("#app"))
 }
 
 @observer

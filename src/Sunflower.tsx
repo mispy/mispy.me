@@ -2,14 +2,11 @@ import * as _ from 'lodash'
 import * as React from 'react'
 import * as d3 from 'd3'
 import * as d3_chromatic from 'd3-scale-chromatic'
-import {hexbin as d3_hexbin} from 'd3-hexbin'
 import {observer} from 'mobx-react'
 import {computed, observable, action} from 'mobx'
-import {bind} from 'decko'
 
 declare var require: any
-const styles = require('./Homepage.css')
-const Resizable = require('react-component-resizable').default
+const styles = require('./Homepage.scss')
 
 interface Vector2 {
     x: number,
@@ -55,13 +52,13 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
 
     offscreenCanvas: HTMLCanvasElement
     ctx: CanvasRenderingContext2D
-    base: HTMLCanvasElement
-    finalCtx: CanvasRenderingContext2D
+    base: React.RefObject<HTMLCanvasElement> = React.createRef()
+    finalCtx!: CanvasRenderingContext2D
     points: {x: number, y: number, color?: string, colorPriority?: number}[]
     isMouseDown: boolean = false
 
-    constructor() {
-        super()
+    constructor(props: any) {
+        super(props)
         this.points = d3.range(1000).map(i => {return { x: 0, y: 0 }})
         this.offscreenCanvas = document.createElement('canvas')
         this.ctx = this.offscreenCanvas.getContext('2d') as CanvasRenderingContext2D
@@ -84,7 +81,7 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
     }
 
     @action componentDidMount() {
-        this.finalCtx = this.base.getContext('2d') as CanvasRenderingContext2D
+        this.finalCtx = this.base.current!.getContext('2d') as CanvasRenderingContext2D
         this.componentDidUpdate()
         requestAnimationFrame(this.frame)
     }
@@ -97,8 +94,8 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
             priority: 0
         }))
 
-        this.offscreenCanvas.width = this.base.width
-        this.offscreenCanvas.height = this.base.height        
+        this.offscreenCanvas.width = this.base.current!.width
+        this.offscreenCanvas.height = this.base.current!.height        
     }
 
     @action.bound expandRipples() {
@@ -130,7 +127,7 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
 
         const {ctx, size, points, ripples} = this
 
-        ctx.clearRect(0, 0, this.base.width, this.base.height);
+        ctx.clearRect(0, 0, this.base.current!.width, this.base.current!.height);
 
         const pointRadius = Math.round(size/130)
 
@@ -141,7 +138,7 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
             ctx.fill()
         })
 
-        this.finalCtx.clearRect(0, 0, this.base.width, this.base.height);
+        this.finalCtx.clearRect(0, 0, this.base.current!.width, this.base.current!.height);
         this.finalCtx.drawImage(this.offscreenCanvas, 0, 0)
 
         requestAnimationFrame(this.frame)
@@ -158,12 +155,12 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
         this.isMouseDown = false
     }
 
-    @action.bound onMouseMove(e: any) {
+    @action.bound onMouseMove(e: React.MouseEvent<HTMLCanvasElement>|React.TouchEvent<HTMLCanvasElement>) {
         e.preventDefault()
 
-        const rect = e.target.getBoundingClientRect()
-        const offsetX = e.offsetX || e.targetTouches[0].pageX - rect.left
-        const offsetY = e.offsetY || e.targetTouches[0].pageY - rect.top
+        const rect = e.currentTarget.getBoundingClientRect()
+        const offsetX = (e.nativeEvent as MouseEvent).offsetX || (e.nativeEvent as any).targetTouches[0].pageX - rect.left
+        const offsetY = (e.nativeEvent as MouseEvent).offsetY || (e.nativeEvent as any).targetTouches[0].pageY - rect.top
 
         const newMouse = { x: offsetX, y: offsetY }
         this.mouse = newMouse
@@ -194,9 +191,10 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
     }
 
     render() {
-        let {size, points, bbox} = this
+        let {size} = this
 
         return <canvas 
+            ref={this.base}
             width={size} height={size} style={{width: size, height: size, cursor: 'pointer'}}
             onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseLeave={this.onMouseUp} onMouseMove={this.onMouseMove}
             onTouchStart={this.onMouseDown} onTouchEnd={this.onMouseUp} onTouchMove={this.onMouseMove}
@@ -206,21 +204,26 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
 
 @observer
 export default class Sunflower extends React.Component {
-    @observable size: number
-    base: HTMLDivElement
+    @observable size: number = 0
+    base: React.RefObject<HTMLDivElement> = React.createRef()
 
     componentDidMount() {
         this.onResize()
+        window.addEventListener('resize', this.onResize)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize)
     }
 
     @action.bound onResize() {
-        this.size = Math.floor(Math.min(this.base.clientWidth, this.base.clientHeight))
+        this.size = Math.floor(Math.min(this.base.current!.clientWidth, this.base.current!.clientHeight))
     }
 
     render() {
         const {size, onResize} = this
-        return <Resizable onResize={onResize} class={styles.sunflower}>
-            <SunflowerMain x={0} y={0} size={size}/>
-        </Resizable>
+        return <div ref={this.base} className={styles.sunflower}>
+            {size && <SunflowerMain x={0} y={0} size={size}/>}
+        </div>
     }
 }
