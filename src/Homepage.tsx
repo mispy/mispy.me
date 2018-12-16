@@ -32,11 +32,11 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                 <i className="fa fa-angle-down"/>
             </section>
             <section className={styles.currentProject}>
-                <h2>Current Project</h2>
+                <h2>Main Project</h2>
                 <hr/>
                 <div className="project">
                     <a href="https://ourworldindata.org" target="_blank"><img src={owidImg}/></a>
-                    <p>Since 2016 I have been working with a great team at the <a href="http://www.oxfordmartin.ox.ac.uk/">Oxford Martin School</a> on <a href="https://ourworldindata.org">Our World in Data</a>. Our goal is to make reliable information about important global issues accessible and freely available to all of humanity.</p>
+                    <p>Since 2016 I've been working with some awesome researchers at the University of Oxford on <a href="https://ourworldindata.org">Our World in Data</a>. We're building a big collection of open research and data, covering topics like <a href="https://ourworldindata.org/extreme-poverty">global poverty</a>, <a href="https://ourworldindata.org/financing-healthcare">healthcare financing</a> and <a href="https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions">climate change</a>.</p>
                 </div>
             </section>
             <section className={styles.contact}>
