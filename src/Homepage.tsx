@@ -82,7 +82,7 @@ window.homepageStart = function() {
     ___________________________####__________________________________`
 
     console.log(puzzle.replace(/#/g, '🍂').replace(/_/g, '🍃'))
-    console.log('%c Leaves swirl in the autumn breeze. Your hear a whisper upon the wind.', 'color: #df7a02');
+    console.log('%c Leaves swirl in the autumn breeze. Your hear a whisper upon the wind. All is still in the center.', 'color: #df7a02');
 }
 
 @observer
