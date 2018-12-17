@@ -145,8 +145,6 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
     }
 
     @action.bound onMouseDown(e: React.MouseEvent<HTMLCanvasElement>|React.TouchEvent<HTMLCanvasElement>) {
-        e.preventDefault();
-
         this.isMouseDown = true
         this.onMouseMove(e)
     }
