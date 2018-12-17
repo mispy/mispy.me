@@ -8,7 +8,7 @@
 		margin: 1em;
 	}
 
-	section:not(.cover) {
+	section:not(.cover), footer {
 		width: 100%;
 		display: flex;
 		flex-direction: column;
@@ -19,19 +19,19 @@
 		padding-top: 3em;
 	}
 
-	section > *:not(hr):not(img) {
+	section > *:not(hr):not(img), footer > * {
 		width: 90%;
 		max-width: 800px;
 	}
 
 	footer {
-		margin-top: 2em;
 		border-top: 1px solid #ccc;
 		padding-bottom: 30px;
 	}
 
 	footer p {
 		opacity: 0.8;
+		margin-top: 0;
 	}
 
 	section.misc {
@@ -39,6 +39,10 @@
 
 		h2 {
 			text-align: center;
+		}
+
+		ul {
+			width: calc(90% - 2em);
 		}
 
 		li {
