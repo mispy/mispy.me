@@ -27,8 +27,25 @@
 	footer {
 		margin-top: 2em;
 		border-top: 1px solid #ccc;
-		padding-top: 2em;
 		padding-bottom: 30px;
+	}
+
+	footer p {
+		opacity: 0.8;
+	}
+
+	section.misc {
+		text-align: left;
+
+		h2 {
+			text-align: center;
+		}
+
+		li {
+			font-size: 17px;
+			line-height: 24px;
+			margin-bottom: 10px;
+		}
 	}
 }
 
@@ -48,8 +65,8 @@
 	}
 
 	p {
-		margin-top: 0;
-		font-style: italic;
+		font-size: 18px;
+		margin-top: 10px;
 	}
 
 	i.fa-angle-down {
