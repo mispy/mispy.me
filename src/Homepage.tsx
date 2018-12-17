@@ -45,6 +45,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                     <li>You can play <a href="https://pathspire.mispy.me/">Pathspire</a>, my little gamejam puzzle roguelike.</li>
                     <li>I'm trying to <a href="https://github.com/mispy/kiwisbybeat-archive">archive the works</a> of the mysterious webcomic artist Ryan Armand. If you happen to have pages from the Socks comics, let me know!</li>
                     <li>Tiny web experiments: <a href="https://mispy-spectral-pulse.netlify.com">spectral pulse</a>, <a href="https://mispy-hexgrid.netlify.com/">hex gradients</a>, <a href="https://plusle.mispy.me/">positivity Plusle</a>, <a href="https://spdgrid.mispy.me/">spatial prisoner's dilemma</a></li>
+                    <li>My <a href="https://github.com/mispy/adventofcode">solutions</a> to the Advent of Code competition puzzles</li>
                 </ul>
                 <h3>Writing</h3>
                 <ul>

@@ -40,7 +40,7 @@ class Head extends React.Component<{path: string, assets: string[], head: Helmet
         const {head, assets, path} = this.props
         const css = assets.filter(value => value.match(/\.css$/))
 
-        const description = `Since 2016 I have been working with Max Roser and the Oxford Martin School on Our World In Data. This project aims to make verifiable quantitative information about issues of global importance accessible and freely available to all of humanity.`
+        const description = `Since 2016 I've been working with some awesome researchers at the University of Oxford on Our World in Data. We're building a big collection of open knowledge, covering topics like global poverty, healthcare financing and climate change.`
 
         return <head>
             {head.title.toComponent()}
