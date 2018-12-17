@@ -13,6 +13,76 @@ const owidImg = require('./owid.png')
 declare var window: any
 window.homepageStart = function() {
     ReactDOM.render(<Homepage isClient={true}/>, document.querySelector("#app"))
+
+    const puzzle = `\n
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    __________________________________________###____________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    ________________________________________________##_______________
+    __________________________________________________##_____________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    ____________________________##___________________________________
+    _______________________##________________________________________
+    _______________________________________________________#_________
+    __________________#__________________##__________________________
+    _________________________________________________________________
+    ________________________________________##_______________________
+    _____________#____________________________#______________________
+    __________________________________________#______________________
+    ___________#_______________________________#_____________________
+    ___________#______________________________________________#______
+    __________#__________________________________#___________________
+    __________#_________________________________#____________________
+    _________________________________________________________________
+    ________#______________#_________________________________________
+    ________#_______________#_____________________#__________________
+    _______#_____________##______________________#_____________#_____
+    _______#_____________##__________#_______________________________
+    ____________________#____________________________________________
+    _________________________________#__#________##__________________
+    ___________________#___________#####_________#____________#______
+    ___________________#___________#####_________#____________#______
+    _____________________________#_####__________#____________#______
+    ________________________________##__________#_____________#______
+    __________________#__________#______________#____________________
+    ___________________#_____________________________________________
+    ______________________________##_________________________#_______
+    ________________________________##______________________#________
+    __________________________________###___________________#________
+    ___________________#________________#____________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    ______________________#__________________________________________
+    ______________________#__________________________________________
+    _________________________________________________#_______________
+    ________________________##_______________________#_______________
+    __________________________##_____________________________________
+    ____________________________________________##___________________
+    ____________________________#__#________#__##____________________
+    ________________________________#__#__#__________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    _________________________________________________________________
+    ____________________###__________________________________________
+    _______________________#_________________________________________
+    _________________________________________________________________
+    ___________________________####__________________________________`
+
+    console.log(puzzle.replace(/#/g, '🍂').replace(/_/g, '🍃'))
+    console.log('%c Leaves swirl in the autumn breeze. Your hear a whisper upon the wind.', 'color: #df7a02');
 }
 
 @observer
@@ -26,7 +96,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                 {isClient && <Sunflower/>}
                 {!isClient && <img className={styles.sunflower} src={sunflowerImg}/>}
                 <h1>Mispy's Website</h1>
-                <p>The pretty spinny thing is a <a href="https://en.wikipedia.org/wiki/Phyllotaxis">phyllotaxis</a>. Try clicking on it!</p>
+                <p>This pretty swirly thing is a <a href="https://en.wikipedia.org/wiki/Phyllotaxis">phyllotaxis</a>. Try clicking on it!</p>
                 <i className="fa fa-angle-down"/>
             </section>
             <section className={styles.currentProject}>
@@ -41,7 +111,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
             <section className="misc">
                 <h3>Little Projects</h3>
                 <ul>
-                    <li>I made <a href="https://kanajolt.mispy.me/">Kanajolt</a>, a tool that helps you learn Japanese syllabaries by reading Pokémon names.</li>
+                    <li>I made <a href="https://kanajolt.mispy.me/">Kanajolt</a>, a thing that helps you learn Japanese syllabaries by reading Pokémon names.</li>
                     <li>You can play <a href="https://pathspire.mispy.me/">Pathspire</a>, my little gamejam puzzle roguelike.</li>
                     <li>I'm trying to <a href="https://github.com/mispy/kiwisbybeat-archive">archive the works</a> of the mysterious webcomic artist Ryan Armand. If you happen to have pages from the Socks comics, let me know!</li>
                     <li>Tiny web experiments: <a href="https://mispy-spectral-pulse.netlify.com">spectral pulse</a>, <a href="https://mispy-hexgrid.netlify.com/">hex gradients</a>, <a href="https://plusle.mispy.me/">positivity Plusle</a>, <a href="https://spdgrid.mispy.me/">spatial prisoner's dilemma</a></li>
@@ -49,7 +119,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                 </ul>
                 <h3>Writing</h3>
                 <ul>
-                    <li>I helped write this post about the <a href="https://ourworldindata.org/child-mortality-globally">huge decline in child mortality</a>. Perhaps more than anything else, learning about this fundamentally changed the way I think about the world.</li>
+                    <li>I helped write this post about the <a href="https://ourworldindata.org/child-mortality-globally">huge decline in child mortality</a>. Perhaps more than anything else, learning about this fundamentally changed the way I see the world.</li>
                     <li>You can read my <a href="https://usesthis.com/interviews/jaiden.mispy/">interview on Uses This</a> about web development tools and working with scientists as a programmer.</li>
                     <li>Many years ago I made a <a href="https://github.com/mispy/twitter_ebooks">twitterbot library</a>. It was <a href="https://mispy.me/the-mysterious-nature-of-bots/">weirdly popular</a>.</li>
                 </ul>
