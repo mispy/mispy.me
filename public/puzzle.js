@@ -78,7 +78,7 @@ for (const m of formattedPuzzle.match(/%c./g)||[]) {
 formattedPuzzle = formattedPuzzle.replace(/#/g, '#').replace(/_/g, '.')
 
 console.log(formattedPuzzle, ...styles)
-console.log('%cLeaves swirl in the autumn breeze. How will they settle?', 'color: #df7a02')
+console.log('%cLeaves swirl in the autumn breeze. Where do they travel?', 'color: #df7a02')
 
 // Hint: Math.PI * (Math.round(distanceFromCenter) / width) * t
 console.log('%c\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tYou hear a message whispered on the wind.', 'color: #df7a02; font-size: 0.6em; text-align: right;')
