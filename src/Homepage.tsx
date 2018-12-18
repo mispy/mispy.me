@@ -14,6 +14,7 @@ declare var window: any
 window.homepageStart = function() {
     ReactDOM.render(<Homepage isClient={true}/>, document.querySelector("#app"))
 
+    // Hint: Math.PI * (Math.round(distanceFromCenter) / width) * t
     const puzzle = `\n
     _________________________________________________________________
     _________________________________________________________________
