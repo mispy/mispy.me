@@ -120,6 +120,7 @@ class SunflowerMain extends React.Component<{ x: number, y: number, size: number
     }
 
     @action.bound frame() {
+        if (!this.base.current) return
         this.rotation += 0.000002//0.000001///Math.pow(dist(this.mouse, { x: this.width/2, y: this.height/2 }), 2)
 
         this.updatePoints()
