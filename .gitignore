@@ -3,3 +3,4 @@ node_modules
 .awcache
 netlifyctl-debug.log
 dist
+.DS_Store
