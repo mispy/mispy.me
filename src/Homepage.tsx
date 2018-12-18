@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {observer} from 'mobx-react'
 import Sunflower from './Sunflower'
+import * as _ from 'lodash'
 
 declare var require: any
 const styles = require('./Homepage.scss')
@@ -81,8 +82,21 @@ _______________________#_________________________________________
 _________________________________________________________________
 ___________________________####__________________________________`
 
-    console.log(puzzle.replace(/#/g, '🍂').replace(/_/g, '🍃'))
-    console.log('%cLeaves swirl in the autumn breeze. Your hear a whisper upon the wind. All is still in the center.', 'color: #df7a02');
+    let formattedPuzzle = puzzle.replace(/#+/g, '%c$&').replace(/_+/g, '%c$&')
+
+    const styles = []
+    for (const m of formattedPuzzle.match(/%c./g)||[]) {
+        if (m[2] === '#')
+            styles.push('background-color: #111; color: #df7a02')
+        else
+            styles.push('background-color: #111; color: #2d572c')
+    }
+
+    formattedPuzzle = formattedPuzzle.replace(/#/g, '#').replace(/_/g, '.')
+
+    console.log(formattedPuzzle, ...styles)
+    console.log('%cLeaves swirl in the autumn breeze. All is still in the center.', 'color: #df7a02')
+    console.log('%c\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tYou hear a message whispered on the wind.', 'color: #df7a02; font-size: 0.6em; text-align: right;')
 }
 
 @observer
