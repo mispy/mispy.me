@@ -43,6 +43,7 @@
     "sass-loader": "^7.1.0",
     "static-site-generator-webpack-plugin": "^3.2.0",
     "style-loader": "^0.13.2",
+    "three.js": "^0.77.1",
     "ts-loader": "^5.3.1",
     "typescript": "^3.2.2",
     "url-loader": "^1.1.2",

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {observer} from 'mobx-react'
-import Sunflower from './Sunflower'
+import {Sunflower} from './Sunflower'
 import * as _ from 'lodash'
 
 declare var require: any
@@ -12,7 +12,7 @@ const owidImg = require('./owid.png')
 
 declare var window: any
 window.homepageStart = function() {
-    ReactDOM.render(<Homepage isClient={true}/>, document.querySelector("#app"))
+    Sunflower.replaceImg(document.querySelector(".sunflower") as Element)
 }
 
 @observer
@@ -23,8 +23,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
 
         return <main className={styles.homepage}>
             <section className={styles.cover}>
-                {isClient && <Sunflower/>}
-                {!isClient && <img className={styles.sunflower} src={sunflowerImg}/>}
+                <img className={styles.sunflower} src={sunflowerImg}/>
                 <h1>Mispy's Website</h1>
                 <p>This pretty swirly thing is a <a href="https://en.wikipedia.org/wiki/Phyllotaxis">phyllotaxis</a>. Try clicking on it!</p>
                 <i className="fa fa-angle-down"/>
