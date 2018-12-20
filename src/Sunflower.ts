@@ -4,6 +4,7 @@ import * as d3 from 'd3'
 import * as d3_chromatic from 'd3-scale-chromatic'
 import {observer} from 'mobx-react'
 import {computed, observable, action} from 'mobx'
+import * as THREE from 'three'
 
 declare var require: any
 const styles = require('./Homepage.scss')
@@ -31,6 +32,154 @@ class Ripple {
     }
 }
 
+let frag1 = String.raw`
+uniform float iGlobalTime;
+uniform vec2 iResolution;
+uniform vec4      iMouse;
+uniform sampler2D iChannel0;
+varying vec2 fragCoord;
+varying vec2 vUv;
+vec2 cmul( vec2 a, vec2 b )  { return vec2( a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x ); }
+vec2 csqr( vec2 a )  { return vec2( a.x*a.x - a.y*a.y, 2.*a.x*a.y  ); }
+vec3 dmul( vec3 a, vec3 b )  {
+float r = length(a);
+b.xy=cmul(normalize(a.xy), b.xy);
+b.yz=cmul(normalize(a.yz), b.yz);
+return r*b;
+}
+vec3 pow4( vec3 z){
+z=dmul(z,z);return dmul(z,z);
+}
+vec3 pow3( vec3 z){
+float r2 = dot(z,z);
+vec2 a = z.xy;a=csqr(a)/dot( a,a);
+vec2 b = z.yz;b=csqr(b)/dot( b,b); 
+vec2 c = z.xz;c=csqr(c)/dot( c,c);
+z.xy = cmul(a,z.xy);   
+z.yz = cmul(b,z.yz);      
+z.xz = cmul(c,z.xz);
+return r2*z;
+}
+mat2 rot(float a) {
+return mat2(cos(a),sin(a),-sin(a),cos(a));  
+}
+float zoom=4.;
+float field(in vec3 p) {
+float res = 0.;
+vec3 c = p;
+for (int i = 0; i < 10; ++i) {
+    p = abs(p) / dot(p,p) -1.;
+    p = dmul(p,p)+.7;
+    res += exp(-6. * abs(dot(p,c)-.15));
+}
+return max(0., res/3.);
+}
+vec3 raycast( in vec3 ro, vec3 rd )
+{
+float t = 6.0;
+float dt = .05;
+vec3 col= vec3(0.);
+for( int i=0; i<64; i++ )
+{
+    float c = field(ro+t*rd);               
+    t+=dt/(.35+c*c);
+    c = max(5.0 * c - .9, 0.0);
+    col = .97*col+ .08*vec3(0.5*c*c*c, .6*c*c, c);
+}
+return col;
+}
+void main()
+{
+float time = iGlobalTime;
+vec2 q = fragCoord.xy / iResolution.xy;
+vec2 p = -1.0 + 2.0 * q;
+p.x *= iResolution.x/iResolution.y;
+vec2 m = vec2(0.);
+if( iMouse.z>0.0 )m = iMouse.xy/iResolution.xy*3.14;
+m-=.5;
+vec3 ro = zoom*vec3(1.);
+ro.yz*=rot(m.y);
+ro.xz*=rot(m.x+ 0.1*time);
+vec3 ta = vec3( 0.0 , 0.0, 0.0 );
+vec3 ww = normalize( ta - ro );
+vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
+vec3 vv = normalize( cross(uu,ww));
+vec3 rd = normalize( p.x*uu + p.y*vv + 4.0*ww );
+vec3 col = raycast(ro,rd);
+col =  .5 *(log(1.+col));
+col = clamp(col,0.,1.);
+gl_FragColor = vec4( sqrt(col), 1.0 );
+}
+`
+
+let general = String.raw`
+attribute vec3 in_Position;
+varying vec2 fragCoord;
+varying vec2 vUv; 
+void main()
+{
+    vUv = uv;
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
+    gl_Position = projectionMatrix * mvPosition;
+    fragCoord = position.xy;
+}
+`
+
+class GameObject {
+    name: string
+    geometry: THREE.BoxGeometry
+    obj: any
+    material: THREE.ShaderMaterial
+    rx: number
+    ry: number
+    vel: [number, number, number]
+
+    constructor(scene: THREE.Scene, name: string, x: number, y: number, z: number, col: number, rx: number, ry: number) {
+        this.name = name
+        this.geometry = new THREE.BoxGeometry(3, 3, 3);
+
+        const uniforms = {
+            iGlobalTime: {
+              type: "f",
+              value: 1.0
+            },
+            iResolution: {
+              type: "v2",
+              value: new THREE.Vector2()
+            },
+          };
+          uniforms.iResolution.value.x = 1; // window.innerWidth;
+          uniforms.iResolution.value.y = 1; // window.innerHeight;
+          this.material = new THREE.ShaderMaterial({
+            uniforms: uniforms,
+            vertexShader: general,
+            fragmentShader: frag1
+          });
+          this.obj = new THREE.Mesh(this.geometry, this.material);
+          this.obj.startTime = Date.now();
+          this.obj.uniforms = uniforms;
+          this.rx = rx
+          this.ry = ry
+          this.obj.name = name
+          scene.add(this.obj);
+          this.obj.position.x = x;
+          this.obj.position.y = y;
+          this.obj.position.z = z;
+          this.vel = [0, 0, 0]    
+    }
+
+    update() {
+        this.obj.rotation.x += this.rx
+        this.obj.rotation.y += this.ry
+        this.obj.position.x += this.vel[0]
+        this.obj.position.y += this.vel[1]
+        this.obj.position.z += this.vel[2]
+        var elapsedMilliseconds = Date.now() - this.obj.startTime;
+        var elapsedSeconds = elapsedMilliseconds / 1000.;
+        this.obj.uniforms.iGlobalTime.value = elapsedSeconds;
+    }
+}
+
 export class Sunflower {
     static replaceImg(img: Element) {
         const node = document.createElement("div")
@@ -51,27 +200,24 @@ export class Sunflower {
     mouse = { x: 0, y: 0 }
     ripples: Ripple[] = []
     ripplePriority = 0
-    offscreenCanvas: HTMLCanvasElement
-    ctx: CanvasRenderingContext2D
     finalCtx!: CanvasRenderingContext2D
-    points: {x: number, y: number, color?: string, colorPriority?: number}[]
     isMouseDown: boolean = false
     size!: number
-    canvas: HTMLCanvasElement
+
+
+    scene: THREE.Scene
+    camera: THREE.PerspectiveCamera
+    renderer: THREE.WebGLRenderer
+    gameObjects: GameObject[] = []
 
     constructor(base: HTMLDivElement) {
         this.base = base 
-        this.onResize()
-        this.points = d3.range(1000).map(i => {return { x: 0, y: 0 }})
+        this.size = Math.floor(Math.min(this.base.clientWidth, this.base.clientHeight))
 
-        this.ripples.push(new Ripple({
-            origin: { x: this.size/2, y: this.size/2 },
-            colorScale: d3.scaleSequential(d3_chromatic.interpolateYlOrBr).domain([0, this.size*0.9]),
-            radius: this.size,
-            priority: 0
-        }))
+        this.scene = new THREE.Scene()
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
 
-        this.canvas = document.createElement('canvas')
+        /*this.canvas = document.createElement('canvas')
 
         this.canvas.width = this.size
         this.canvas.height = this.size
@@ -84,16 +230,23 @@ export class Sunflower {
         this.canvas.onmousemove = this.onMouseMove.bind(this)
         this.canvas.ontouchstart = this.onMouseDown.bind(this)
         this.canvas.ontouchend = this.onMouseUp.bind(this)
-        this.canvas.ontouchmove = this.onMouseMove.bind(this)
+        this.canvas.ontouchmove = this.onMouseMove.bind(this)*/
 
-        this.base.appendChild(this.canvas)
+        window.addEventListener('resize', this.onResize.bind(this))
 
-        this.offscreenCanvas = document.createElement('canvas')
-        this.offscreenCanvas.width = this.canvas.width
-        this.offscreenCanvas.height = this.canvas.height  
-        this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D
-
-        window.addEventListener('resize', this.onResize)
+        this.camera.position.x = 0;
+        this.camera.position.y = 10;
+        this.camera.position.z = 5;
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setSize(this.size, this.size);
+        base.appendChild(this.renderer.domElement);
+      
+        var light = new THREE.HemisphereLight(0xeeeeee, 0x888888, 1);
+        light.position.set(0, 20, 0);
+        this.scene.add(light);
+        this.frame()
+      
+        this.gameObjects.push(new GameObject(this.scene, "cube3", 0, 10, -3, 0x0000ff, 0, 0.0001))
     }
 
     destroy() {
@@ -102,7 +255,9 @@ export class Sunflower {
 
 
     onResize() {
-        this.size = Math.floor(Math.min(this.base.clientWidth, this.base.clientHeight))
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     play() {
@@ -110,7 +265,13 @@ export class Sunflower {
     }
 
     frame() {
-        this.rotation += 0.000002//0.000001///Math.pow(dist(this.mouse, { x: this.width/2, y: this.height/2 }), 2)
+        this.gameObjects.forEach(function(item) {
+            item.update();
+        });
+        requestAnimationFrame(this.frame.bind(this));
+        this.renderer.render(this.scene, this.camera);
+        return
+        /*this.rotation += 0.000002//0.000001///Math.pow(dist(this.mouse, { x: this.width/2, y: this.height/2 }), 2)
 
         const {ctx, size, points, ripples} = this
 
@@ -139,9 +300,9 @@ export class Sunflower {
             ctx.fill()
         }
 
-        requestAnimationFrame(this.frame.bind(this))
+        requestAnimationFrame(this.frame.bind(this))*/
     }
-
+/*
     expandRipples() {
         const {points, ripples, size} = this
 
@@ -179,7 +340,7 @@ export class Sunflower {
             radius: 0,
             priority: this.ripplePriority++
         }))        
-    }
+    }*/
 
 
     onMouseDown(e: MouseEvent|TouchEvent) {
@@ -204,7 +365,7 @@ export class Sunflower {
         const {size} = this
 
         const lastRipple = _.last(this.ripples)
-        if (this.isMouseDown && (!lastRipple || lastRipple.radius > size/8))
-            this.ripple()
+//        if (this.isMouseDown && (!lastRipple || lastRipple.radius > size/8))
+//            this.ripple()
     }
 }
