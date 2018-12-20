@@ -33,82 +33,75 @@ class Ripple {
 }
 
 let frag1 = String.raw`
+#define TWO_PI 6.2832
+#define CIRCLE_SIZE 0.08
+#define MAX_ITERATIONS 100
+
 uniform float iGlobalTime;
 uniform vec2 iResolution;
-uniform vec4      iMouse;
-uniform sampler2D iChannel0;
 varying vec2 fragCoord;
-varying vec2 vUv;
-vec2 cmul( vec2 a, vec2 b )  { return vec2( a.x*b.x - a.y*b.y, a.x*b.y + a.y*b.x ); }
-vec2 csqr( vec2 a )  { return vec2( a.x*a.x - a.y*a.y, 2.*a.x*a.y  ); }
-vec3 dmul( vec3 a, vec3 b )  {
-float r = length(a);
-b.xy=cmul(normalize(a.xy), b.xy);
-b.yz=cmul(normalize(a.yz), b.yz);
-return r*b;
-}
-vec3 pow4( vec3 z){
-z=dmul(z,z);return dmul(z,z);
-}
-vec3 pow3( vec3 z){
-float r2 = dot(z,z);
-vec2 a = z.xy;a=csqr(a)/dot( a,a);
-vec2 b = z.yz;b=csqr(b)/dot( b,b); 
-vec2 c = z.xz;c=csqr(c)/dot( c,c);
-z.xy = cmul(a,z.xy);   
-z.yz = cmul(b,z.yz);      
-z.xz = cmul(c,z.xz);
-return r2*z;
-}
-mat2 rot(float a) {
-return mat2(cos(a),sin(a),-sin(a),cos(a));  
-}
-float zoom=4.;
-float field(in vec3 p) {
-float res = 0.;
-vec3 c = p;
-for (int i = 0; i < 10; ++i) {
-    p = abs(p) / dot(p,p) -1.;
-    p = dmul(p,p)+.7;
-    res += exp(-6. * abs(dot(p,c)-.15));
-}
-return max(0., res/3.);
-}
-vec3 raycast( in vec3 ro, vec3 rd )
-{
-float t = 6.0;
-float dt = .05;
-vec3 col= vec3(0.);
-for( int i=0; i<64; i++ )
-{
-    float c = field(ro+t*rd);               
-    t+=dt/(.35+c*c);
-    c = max(5.0 * c - .9, 0.0);
-    col = .97*col+ .08*vec3(0.5*c*c*c, .6*c*c, c);
-}
-return col;
-}
+
 void main()
 {
-float time = iGlobalTime;
-vec2 q = fragCoord.xy / iResolution.xy;
-vec2 p = -1.0 + 2.0 * q;
-p.x *= iResolution.x/iResolution.y;
-vec2 m = vec2(0.);
-if( iMouse.z>0.0 )m = iMouse.xy/iResolution.xy*3.14;
-m-=.5;
-vec3 ro = zoom*vec3(1.);
-ro.yz*=rot(m.y);
-ro.xz*=rot(m.x+ 0.1*time);
-vec3 ta = vec3( 0.0 , 0.0, 0.0 );
-vec3 ww = normalize( ta - ro );
-vec3 uu = normalize( cross(ww,vec3(0.0,1.0,0.0) ) );
-vec3 vv = normalize( cross(uu,ww));
-vec3 rd = normalize( p.x*uu + p.y*vv + 4.0*ww );
-vec3 col = raycast(ro,rd);
-col =  .5 *(log(1.+col));
-col = clamp(col,0.,1.);
-gl_FragColor = vec4( sqrt(col), 1.0 );
+	vec2 uv = fragCoord.xy;
+    float width = iResolution.x;
+    float height = iResolution.y;
+    float size = max(width, height);
+    float rotation = 0.1 + iGlobalTime/1000.;
+
+	gl_FragColor = vec4(1.0);
+    
+    
+    // max_i is when dist*dist == (width * width + height * height) / 4.0 + 0.008
+    // 0.020 * size * 0.020 * size * i == (width * width + height * height) / 4.0 + 0.008
+    // i == ((width * width + height * height) / 4.0 + 0.008) / (0.020 * size * 0.020 * size)
+    // float max_i = ((width * width + height * height) / 4.0 + CIRCLE_SIZE) / (0.020 * size * 0.020 * size);
+    
+    
+    vec2 pointCenter = vec2(width, height) / 2.0;
+    
+    float uvDist = length(uv - pointCenter);
+    // we need to check all points with distances from uvDist - CIRCLE_SIZE to uvDist + CIRCLE_SIZE
+    // it turns out that CIRCLE_SIZE is a proportion of size
+    // if dist == uvDist - CIRCLE_SIZE * size
+    // 0.020 * size * sqrt(i) == uvDist - CIRCLE_SIZE * size
+    // 0.020 * sqrt(i) == uvDist / size - CIRCLE_SIZE
+    // sqrt(i) == (uvDist / size - CIRCLE_SIZE) / 0.020
+    float firstSqrtI = (uvDist / size - CIRCLE_SIZE) / 0.020;
+    // if dist == uvDist + CIRCLE_SIZE * size
+    // 0.020 * size * sqrt(i) == uvDist + CIRCLE_SIZE * size
+    // 0.020 * sqrt(i) == uvDist / size + CIRCLE_SIZE
+    // sqrt(i) == (uvDist / size + CIRCLE_SIZE) / 0.020
+    float lastSqrtI = (uvDist / size + CIRCLE_SIZE) / 0.020;
+    float lastI = ceil(lastSqrtI * lastSqrtI);
+    float firstI = floor(firstSqrtI*firstSqrtI);
+    float range = lastI-firstI;
+
+    for (int j = 0; j < MAX_ITERATIONS; j++) {
+        if (float(j) >= range) {
+            break;
+        }
+
+        float i = firstI+float(j);
+
+        float dist = 0.020 * size * sqrt(i);
+        // if (dist > uvDist + CIRCLE_SIZE * size) break;
+        // if (dist < uvDist - CIRCLE_SIZE * size) continue;
+        float angle = TWO_PI/4. * i * rotation;
+
+        vec2 xy = pointCenter + dist * vec2(cos(angle), sin(angle));
+        float d = length(xy - uv) / size;        
+        if (d < CIRCLE_SIZE) {
+            float rangle = TWO_PI * i * rotation*10.;
+            vec2 rippleCenter = vec2(size, size) / 2.;
+			vec2 r = rippleCenter + size / 2. * vec2(cos(rangle), sin(rangle));
+            float rippleD = length(xy - r)/ size*2.;
+       
+        
+            gl_FragColor = vec4(245./255., 164./255., 74./255., 0) / rippleD;
+            break;
+        }
+    }
 }
 `
 
@@ -236,7 +229,7 @@ export class Sunflower {
 
         this.camera.position.x = 0;
         this.camera.position.y = 10;
-        this.camera.position.z = 5;
+        this.camera.position.z = 0;
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize(this.size, this.size);
         base.appendChild(this.renderer.domElement);
