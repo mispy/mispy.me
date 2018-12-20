@@ -79,8 +79,11 @@
 }
 
 .sunflower {
-	max-height: calc(100vh - 15em);
-	height: 90vw;
+	//max-height: calc(100vh - 15em);
+	//height: 90vw;
+	width: 90vw !important;
+	max-width: 90vw !important;
+	height: 800px;
 
 	canvas {
 		touch-action: none;

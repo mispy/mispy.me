@@ -5,6 +5,7 @@ import * as d3_chromatic from 'd3-scale-chromatic'
 import {observer} from 'mobx-react'
 import {computed, observable, action} from 'mobx'
 import * as THREE from 'three'
+import { Camera } from 'three';
 
 declare var require: any
 const styles = require('./Homepage.scss')
@@ -34,7 +35,8 @@ class Ripple {
 
 let frag1 = String.raw`
 #define TWO_PI 6.2832
-#define CIRCLE_SIZE 0.01
+#define CIRCLE_SIZE 0.8
+#define SCALE_FACTOR 0.0020
 #define MAX_ITERATIONS 100
 
 uniform float iGlobalTime;
@@ -48,31 +50,14 @@ void main()
     float height = iResolution.y;
     float size = max(width, height);
     float rotation = 0.1 + iGlobalTime/1000.;
+    float circleSize = CIRCLE_SIZE;
+    float scaling = SCALE_FACTOR;
 
 	gl_FragColor = vec4(1.0);
-    
-    
-    // max_i is when dist*dist == (width * width + height * height) / 4.0 + 0.008
-    // 0.020 * size * 0.020 * size * i == (width * width + height * height) / 4.0 + 0.008
-    // i == ((width * width + height * height) / 4.0 + 0.008) / (0.020 * size * 0.020 * size)
-    // float max_i = ((width * width + height * height) / 4.0 + CIRCLE_SIZE) / (0.020 * size * 0.020 * size);
-    
-    
-    vec2 pointCenter = vec2(width, height) / 2.0;
-    
+    vec2 pointCenter = vec2(width, height) / 2.0;    
     float uvDist = length(uv - pointCenter);
-    // we need to check all points with distances from uvDist - CIRCLE_SIZE to uvDist + CIRCLE_SIZE
-    // it turns out that CIRCLE_SIZE is a proportion of size
-    // if dist == uvDist - CIRCLE_SIZE * size
-    // 0.020 * size * sqrt(i) == uvDist - CIRCLE_SIZE * size
-    // 0.020 * sqrt(i) == uvDist / size - CIRCLE_SIZE
-    // sqrt(i) == (uvDist / size - CIRCLE_SIZE) / 0.020
-    float firstSqrtI = (uvDist / size - CIRCLE_SIZE) / 0.020;
-    // if dist == uvDist + CIRCLE_SIZE * size
-    // 0.020 * size * sqrt(i) == uvDist + CIRCLE_SIZE * size
-    // 0.020 * sqrt(i) == uvDist / size + CIRCLE_SIZE
-    // sqrt(i) == (uvDist / size + CIRCLE_SIZE) / 0.020
-    float lastSqrtI = (uvDist / size + CIRCLE_SIZE) / 0.020;
+    float firstSqrtI = (uvDist / size - circleSize) / scaling;
+    float lastSqrtI = (uvDist / size + circleSize) / scaling;
     float lastI = ceil(lastSqrtI * lastSqrtI);
     float firstI = floor(firstSqrtI*firstSqrtI);
     float range = lastI-firstI;
@@ -84,14 +69,14 @@ void main()
 
         float i = firstI+float(j);
 
-        float dist = 0.020 * size * sqrt(i);
-        // if (dist > uvDist + CIRCLE_SIZE * size) break;
-        // if (dist < uvDist - CIRCLE_SIZE * size) continue;
+        float dist = scaling * size * sqrt(i);
+        // if (dist > uvDist + circleSize * size) break;
+        // if (dist < uvDist - circleSize * size) continue;
         float angle = TWO_PI/4. * i * rotation;
 
         vec2 xy = pointCenter + dist * vec2(cos(angle), sin(angle));
         float d = length(xy - uv) / size;        
-        if (d < CIRCLE_SIZE) {
+        if (d < circleSize) {
             float rangle = TWO_PI * i * rotation*10.;
             vec2 rippleCenter = vec2(size, size) / 2.;
 			vec2 r = rippleCenter + size / 2. * vec2(cos(rangle), sin(rangle));
@@ -108,10 +93,8 @@ void main()
 let general = String.raw`
 attribute vec3 in_Position;
 varying vec2 fragCoord;
-varying vec2 vUv; 
 void main()
 {
-    vUv = uv;
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
     gl_Position = projectionMatrix * mvPosition;
     fragCoord = uv;
@@ -122,12 +105,11 @@ class GameObject {
     name: string
     geometry: THREE.PlaneGeometry
     obj: any
-    material: THREE.ShaderMaterial
-    vel: [number, number, number]
-
+    material: THREE.Material
+    
     constructor(scene: THREE.Scene, name: string, width: number, height: number, x: number, y: number, z: number) {
         this.name = name
-        this.geometry = new THREE.PlaneGeometry(3, 3, 3);
+        this.geometry = new THREE.PlaneGeometry(width, height);
 
         const uniforms = {
             iGlobalTime: {
@@ -146,15 +128,17 @@ class GameObject {
             vertexShader: general,
             fragmentShader: frag1
           });
+
+              // material
+            /*this.material = new THREE.MeshBasicMaterial( {
+                color: 0x00ffff, 
+            } );*/
+    
           this.obj = new THREE.Mesh(this.geometry, this.material);
           this.obj.startTime = Date.now();
           this.obj.uniforms = uniforms;
           this.obj.name = name
           scene.add(this.obj);
-          this.obj.position.x = x;
-          this.obj.position.y = y;
-          this.obj.position.z = z;
-          this.vel = [0, 0, 0]    
     }
 
     update() {
@@ -187,19 +171,26 @@ export class Sunflower {
     finalCtx!: CanvasRenderingContext2D
     isMouseDown: boolean = false
     size!: number
+    width!: number
+    height!: number
 
 
     scene: THREE.Scene
-    camera: THREE.PerspectiveCamera
+    camera: THREE.OrthographicCamera
     renderer: THREE.WebGLRenderer
     plane: GameObject
 
     constructor(base: HTMLDivElement) {
         this.base = base 
-        this.size = Math.floor(Math.min(this.base.clientWidth, this.base.clientHeight))
+
+
+        const worldWidth = 100
+        const worldHeight = 100
+        const worldSize = Math.max(worldWidth, worldHeight)
 
         this.scene = new THREE.Scene()
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+        this.camera = new THREE.OrthographicCamera(-worldWidth/2, worldWidth/2, -worldHeight/2, worldHeight/2, 1, worldSize*10)
+        this.camera.position.set(0, 0, -worldSize*2)
 
         /*this.canvas = document.createElement('canvas')
 
@@ -216,27 +207,16 @@ export class Sunflower {
         this.canvas.ontouchend = this.onMouseUp.bind(this)
         this.canvas.ontouchmove = this.onMouseMove.bind(this)*/
 
-        window.addEventListener('resize', this.onResize.bind(this))
 
-        this.camera.position.x = 0;
-        this.camera.position.y = 10;
-        this.camera.position.z = 0;
         this.renderer = new THREE.WebGLRenderer();
-        this.renderer.setSize(this.size, this.size);
         base.appendChild(this.renderer.domElement);
-      
-        var light = new THREE.HemisphereLight(0xeeeeee, 0x888888, 1);
-        light.position.set(0, 20, 0);
-        this.scene.add(light);
 
-        this.plane = new GameObject(this.scene, "plane", this.size, this.size, 0, 10, -3)
-      
-        let dist = this.camera.position.z - this.plane.obj.position.z;
-        let height = 2; // desired height to fit
-        this.camera.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI);
-        this.camera.updateProjectionMatrix();
+        this.plane = new GameObject(this.scene, "plane", worldWidth, worldHeight, 0, 0, 0)
+        this.camera.lookAt(this.plane.obj.position)
+        this.onResize()
 
-        this.frame()
+        this.bindFrame = this.frame.bind(this)
+        window.addEventListener('resize', this.onResize.bind(this))
     }
 
     destroy() {
@@ -245,50 +225,21 @@ export class Sunflower {
 
 
     onResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.size = Math.floor(Math.min(this.base.clientWidth, this.base.clientHeight))
+        this.width = this.base.clientWidth//this.size
+        this.height = this.base.clientHeight//this.size
+        this.renderer.setSize(this.width, this.height);
     }
 
     play() {
-        requestAnimationFrame(this.frame.bind(this))
+        requestAnimationFrame(this.bindFrame)
     }
 
+    bindFrame: () => void
     frame() {
         this.plane.update()
-        requestAnimationFrame(this.frame.bind(this));
+        requestAnimationFrame(this.bindFrame);
         this.renderer.render(this.scene, this.camera);
-        return
-        /*this.rotation += 0.000002//0.000001///Math.pow(dist(this.mouse, { x: this.width/2, y: this.height/2 }), 2)
-
-        const {ctx, size, points, ripples} = this
-
-        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        const pointRadius = Math.round(size/130)
-        
-        for (const p of points) {
-        }
-
-
-        const numPoints = 1000
-
-        const {rotation, theta} = this
-        const spacing = 0.015*size
-
-        for (let i = 0; i < numPoints; i++) {
-            const radius = spacing * Math.sqrt(i)
-            const angle = theta * i * rotation
-            let x = size / 2 + radius * Math.cos(angle)
-            let y = size / 2 + radius * Math.sin(angle)
-
-            ctx.fillStyle = '#f5a44a'
-            ctx.beginPath()
-            ctx.arc(x, y, pointRadius, 0, 2 * Math.PI, false)
-            ctx.fill()
-        }
-
-        requestAnimationFrame(this.frame.bind(this))*/
     }
 /*
     expandRipples() {
