@@ -34,7 +34,7 @@ class Ripple {
 
 let frag1 = String.raw`
 #define TWO_PI 6.2832
-#define CIRCLE_SIZE 0.08
+#define CIRCLE_SIZE 0.01
 #define MAX_ITERATIONS 100
 
 uniform float iGlobalTime;
@@ -114,22 +114,20 @@ void main()
     vUv = uv;
     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0 );
     gl_Position = projectionMatrix * mvPosition;
-    fragCoord = position.xy;
+    fragCoord = uv;
 }
 `
 
 class GameObject {
     name: string
-    geometry: THREE.BoxGeometry
+    geometry: THREE.PlaneGeometry
     obj: any
     material: THREE.ShaderMaterial
-    rx: number
-    ry: number
     vel: [number, number, number]
 
-    constructor(scene: THREE.Scene, name: string, x: number, y: number, z: number, col: number, rx: number, ry: number) {
+    constructor(scene: THREE.Scene, name: string, width: number, height: number, x: number, y: number, z: number) {
         this.name = name
-        this.geometry = new THREE.BoxGeometry(3, 3, 3);
+        this.geometry = new THREE.PlaneGeometry(3, 3, 3);
 
         const uniforms = {
             iGlobalTime: {
@@ -141,8 +139,8 @@ class GameObject {
               value: new THREE.Vector2()
             },
           };
-          uniforms.iResolution.value.x = 1; // window.innerWidth;
-          uniforms.iResolution.value.y = 1; // window.innerHeight;
+          uniforms.iResolution.value.x = 1;
+          uniforms.iResolution.value.y = 1;
           this.material = new THREE.ShaderMaterial({
             uniforms: uniforms,
             vertexShader: general,
@@ -151,8 +149,6 @@ class GameObject {
           this.obj = new THREE.Mesh(this.geometry, this.material);
           this.obj.startTime = Date.now();
           this.obj.uniforms = uniforms;
-          this.rx = rx
-          this.ry = ry
           this.obj.name = name
           scene.add(this.obj);
           this.obj.position.x = x;
@@ -162,11 +158,6 @@ class GameObject {
     }
 
     update() {
-        this.obj.rotation.x += this.rx
-        this.obj.rotation.y += this.ry
-        this.obj.position.x += this.vel[0]
-        this.obj.position.y += this.vel[1]
-        this.obj.position.z += this.vel[2]
         var elapsedMilliseconds = Date.now() - this.obj.startTime;
         var elapsedSeconds = elapsedMilliseconds / 1000.;
         this.obj.uniforms.iGlobalTime.value = elapsedSeconds;
@@ -201,7 +192,7 @@ export class Sunflower {
     scene: THREE.Scene
     camera: THREE.PerspectiveCamera
     renderer: THREE.WebGLRenderer
-    gameObjects: GameObject[] = []
+    plane: GameObject
 
     constructor(base: HTMLDivElement) {
         this.base = base 
@@ -237,9 +228,15 @@ export class Sunflower {
         var light = new THREE.HemisphereLight(0xeeeeee, 0x888888, 1);
         light.position.set(0, 20, 0);
         this.scene.add(light);
-        this.frame()
+
+        this.plane = new GameObject(this.scene, "plane", this.size, this.size, 0, 10, -3)
       
-        this.gameObjects.push(new GameObject(this.scene, "cube3", 0, 10, -3, 0x0000ff, 0, 0.0001))
+        let dist = this.camera.position.z - this.plane.obj.position.z;
+        let height = 2; // desired height to fit
+        this.camera.fov = 2 * Math.atan(height / (2 * dist)) * (180 / Math.PI);
+        this.camera.updateProjectionMatrix();
+
+        this.frame()
     }
 
     destroy() {
@@ -258,9 +255,7 @@ export class Sunflower {
     }
 
     frame() {
-        this.gameObjects.forEach(function(item) {
-            item.update();
-        });
+        this.plane.update()
         requestAnimationFrame(this.frame.bind(this));
         this.renderer.render(this.scene, this.camera);
         return
