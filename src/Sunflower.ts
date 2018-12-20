@@ -35,7 +35,7 @@ class Ripple {
 
 let frag1 = String.raw`
 #define TWO_PI 6.2832
-#define CIRCLE_SIZE 0.1
+#define CIRCLE_SIZE 0.5
 #define SCALE_FACTOR 0.0002
 #define MAX_ITERATIONS 100
 
