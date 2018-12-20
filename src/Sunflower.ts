@@ -35,8 +35,8 @@ class Ripple {
 
 let frag1 = String.raw`
 #define TWO_PI 6.2832
-#define CIRCLE_SIZE 0.5
-#define SCALE_FACTOR 0.0002
+#define CIRCLE_SIZE 0.8
+#define SCALE_FACTOR 0.02
 #define MAX_ITERATIONS 100
 
 uniform float iGlobalTime;
@@ -50,12 +50,13 @@ void main()
     float height = iResolution.y;
     float size = max(width, height);
     float rotation = 0.1 + iGlobalTime/1000.;
+    float rippleRot = iGlobalTime/1000.;
     float circleSize = CIRCLE_SIZE;
     float scaling = SCALE_FACTOR;
 
 	gl_FragColor = vec4(1.0);
-    vec2 pointCenter = vec2(width, height) / 2.0;    
-    float uvDist = length(uv - pointCenter);
+    vec2 pointOrigin = vec2(width, height) / 2.0;    
+    float uvDist = length(uv - pointOrigin);
     float firstSqrtI = (uvDist / size - circleSize) / scaling;
     float lastSqrtI = (uvDist / size + circleSize) / scaling;
     float lastI = ceil(lastSqrtI * lastSqrtI);
@@ -74,13 +75,13 @@ void main()
         // if (dist < uvDist - circleSize * size) continue;
         float angle = TWO_PI/4. * i * rotation;
 
-        vec2 xy = pointCenter + dist * vec2(cos(angle), sin(angle));
+        vec2 xy = pointOrigin + dist * vec2(cos(angle), sin(angle));
         float d = length(xy - uv) / size;        
         if (d < circleSize) {
-            float rangle = TWO_PI * i * rotation*10.;
-            vec2 rippleCenter = vec2(size, size) / 2.;
-			vec2 r = rippleCenter + size / 2. * vec2(cos(rangle), sin(rangle));
-            float rippleD = length(xy - r)/ size*2.;
+            float rangle = TWO_PI * i * rippleRot;
+            float rippleDist = size/2.;
+			vec2 r = pointOrigin + rippleDist * vec2(cos(rangle), sin(rangle));
+            float rippleD = length(xy - r);
        
         
             gl_FragColor = vec4(245./255., 164./255., 74./255., 0) / rippleD;
@@ -184,8 +185,8 @@ export class Sunflower {
         this.base = base 
 
 
-        const worldWidth = 100
-        const worldHeight = 100
+        const worldWidth = this.base.clientWidth
+        const worldHeight = this.base.clientHeight
         const worldSize = Math.max(worldWidth, worldHeight)
 
         this.scene = new THREE.Scene()
