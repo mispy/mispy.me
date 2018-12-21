@@ -36,7 +36,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
             <section className={styles.cover}>
                 <img className={styles.sunflower} src={sunflowerImg}/>
                 <h1>Mispy's Website</h1>
-                <p>This pretty swirly thing is a <a href="https://en.wikipedia.org/wiki/Phyllotaxis">phyllotaxis</a>. Try clicking on it!</p>
+                <p>This pretty swirly <a href="https://github.com/mispy/mispy.me/blob/master/src/Sunflower.ts">WebGL thing</a> is a <a href="https://en.wikipedia.org/wiki/Phyllotaxis">phyllotaxis</a>. Try clicking on it!</p>
                 <i className="fa fa-angle-down"/>
             </section>
             <section className={styles.currentProject}>
