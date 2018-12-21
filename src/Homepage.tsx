@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {observer} from 'mobx-react'
-import {Sunflower} from './Sunflower'
+import {SunflowerView} from './Sunflower'
 import * as _ from 'lodash'
 
 declare var require: any
@@ -12,7 +12,18 @@ const owidImg = require('./owid.png')
 
 declare var window: any
 window.homepageStart = function() {
-    Sunflower.replaceImg(document.querySelector(".sunflower") as Element)
+    const img = document.querySelector(".sunflower") as Element
+    const div = document.createElement("div")
+    div.className = "sunflower"
+
+    img.replaceWith(div)
+
+    try {
+        new SunflowerView(div)
+    } catch (e) {
+        div.replaceWith(img)
+        console.error(e)
+    }
 }
 
 @observer
