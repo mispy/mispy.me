@@ -11,7 +11,7 @@ function getDistance(a: Point, b: Point) {
 // a bit more than what can fit in a square
 const MAX_POINTS = 1000;
 
-const CIRCLE_SIZE = 0.012;
+const CIRCLE_SIZE = 0.014;
 
 const MAX_TIME = 24;
 const SECONDS_PER_TIME = 1000;
@@ -26,7 +26,7 @@ const MAX_FRAME = MAX_TIME * FRAMES_PER_TIME;
 // note that the "size" of the viewport we're working with
 // [-1, 1] x [-1, 1]
 // is 2
-const DIST_MULTIPLIER = 0.028;
+const DIST_MULTIPLIER = 0.030;
 const ANGLE_MULTIPLIER = -2 * Math.PI / MAX_TIME;
 
 const VERTEX_SHADER_INSTANCING = `
