@@ -1,18 +1,14 @@
+// This optimized version of the little sunflower was made together with mcpower
+// when we were exploring how webgl and shaders work. It's fairly low-level code
+// for learning purposes-- if you want to make something similar, you might want
+// to consider using a framework like pixijs!
+
 import * as d3 from 'd3'
 import * as d3_chromatic from 'd3-scale-chromatic'
 import * as _ from 'lodash'
 
-
-function getDistance(a: Point, b: Point) {
-    return Math.sqrt((b.x-a.x)*(b.x-a.x) + (b.y-a.y)*(b.y-a.y))
-}
-
-
-// a bit more than what can fit in a square
 const MAX_POINTS = 1000;
-
 const CIRCLE_SIZE = 0.014;
-
 const MAX_TIME = 24;
 const SECONDS_PER_TIME = 1000;
 // Assume 60fps.
@@ -21,7 +17,6 @@ const FRAMES_PER_TIME = SECONDS_PER_TIME * FRAMES_PER_SECOND;
 const INITIAL_TIME = 0.5;
 const INITIAL_FRAME = INITIAL_TIME * SECONDS_PER_TIME * FRAMES_PER_SECOND;
 const MAX_FRAME = MAX_TIME * FRAMES_PER_TIME;
-
 
 // note that the "size" of the viewport we're working with
 // [-1, 1] x [-1, 1]
@@ -60,6 +55,10 @@ void main() {
 interface Point {
     x: number;
     y: number;
+}
+
+function getDistance(a: Point, b: Point) {
+    return Math.sqrt((b.x-a.x)*(b.x-a.x) + (b.y-a.y)*(b.y-a.y))
 }
 
 interface SpiralPoint {
@@ -116,7 +115,6 @@ class Sunflower {
                 initPos,
                 color: d3.color("#f5a44a") as d3.RGBColor,
                 colorPriority: 0
-//                rippleD: 4 * Math.sqrt(i / (points - 1))
             });
         }
 
@@ -471,7 +469,6 @@ export class SunflowerView {
         function onMouseUp() {
             isMouseDown = false
         }
-
     
         canvas.onmousemove = onMouseMove
         canvas.onmousedown = onMouseDown
