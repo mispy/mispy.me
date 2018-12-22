@@ -5,6 +5,7 @@
     "deploy": "netlifyctl deploy -b build -s ed42b7f5-a681-4718-a56f-a71064cc0fcf"
   },
   "dependencies": {
+    "@types/cheerio": "^0.22.10",
     "@types/d3": "^4.10.0",
     "@types/d3-hexbin": "^0.2.0",
     "@types/d3-scale-chromatic": "^1.0.2",
@@ -13,6 +14,7 @@
     "@types/react-dom": "^16.0.11",
     "@types/react-helmet": "^5.0.7",
     "@types/three": "^0.93.13",
+    "cheerio": "^1.0.0-rc.2",
     "concurrently": "^4.1.0",
     "copy-webpack-plugin": "^4.6.0",
     "css-loader": "^2.0.1",

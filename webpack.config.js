@@ -6,7 +6,6 @@ const fs = require('fs')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
 const postSlugs = fs.readdirSync(path.join(__dirname, 'posts')).filter(file => !file.match(/.tsx$/))
 
-
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production'
     return {
@@ -14,7 +13,8 @@ module.exports = (env, argv) => {
         mode: argv.mode||'development',
         entry: {
             build: path.join(__dirname, 'src/index.tsx'),
-            sunflower: path.join(__dirname, 'src/Sunflower.ts')
+            homepage: path.join(__dirname, 'src/homepageClient.ts'),
+            posts: path.join(__dirname, 'src/posts.scss')
         },
         output: {
             path: path.join(__dirname, "build"),

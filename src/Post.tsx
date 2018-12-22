@@ -1,19 +1,19 @@
 import * as React from 'react'
 import * as moment from 'moment'
+import * as cheerio from 'cheerio'
+
 import NoMatch from './NoMatch'
 import Link from './Link'
-import 'highlight.js/styles/monokai-sublime.css'
-import 'font-awesome/css/font-awesome.css'
 import posts from '../posts'
-import Helmet from 'react-helmet'
+import {Metas} from './Metas'
 
 declare var require: any
 const styles = require('./index.scss')
 const mispy = require('./mispy.png')
 
-export default class Post extends React.Component<{params: {slug: string}}> {   
+export default class Post extends React.Component<{slug: string, assets: {[key: string]: string}}> {   
     render() {
-        const {slug} = this.props.params
+        const {slug, assets} = this.props
         const post = posts.filter((p) => p.slug == slug)[0]
 
         if (!post) return <NoMatch/>
@@ -21,8 +21,13 @@ export default class Post extends React.Component<{params: {slug: string}}> {
         const {title, date, body} = post
         const canonicalUrl = `https://mispy.me/${slug}`
 
+        const $ = cheerio.load(body)
+        const firstParagraph = $($("p").get(0)).text() as string
+
         return <main className={styles.post}>
-            <Helmet title={title} titleTemplate="%s - ~mispy"/>
+            <Metas title={title} description={firstParagraph} path="/">
+                <link rel="stylesheet" type="text/css" href={assets['posts.css']}/>  
+            </Metas>
             <header>
                 <Link to="/"><img className={styles.profile} src={mispy} alt="Jaiden Mispy"/></Link>
             </header>

@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom'
 import {observer} from 'mobx-react'
 import * as _ from 'lodash'
 
+import {Metas} from './Metas'
+
 declare var require: any
 const styles = require('./Homepage.scss')
 const mispyImg = require('./mispy.png')
@@ -10,20 +12,23 @@ const sunflowerImg = require('./sunflower.png')
 const owidImg = require('./owid.png')
 
 @observer
-export default class Homepage extends React.Component<{ isClient: boolean, assets: {[key: string]: string} }> {
+export default class Homepage extends React.Component<{ assets: {[key: string]: string} }> {
 	render() {
+        const description = `I'm work with some awesome researchers at the University of Oxford on Our World in Data. We're building a big collection of open knowledge, covering topics like global poverty, healthcare financing and climate change.`
+
         return <main className={styles.homepage}>
+            <Metas title="Mispy's Website" description={description} path="/"/>
             <section className={styles.cover}>
                 <img className={styles.sunflower} src={sunflowerImg}/>
                 <h1>Mispy's Website</h1>
-                <i className="fa fa-angle-down"/>
+                <i className="angle-down"/>
             </section>
             <section className={styles.currentProject}>
                 <h2>Main Project</h2>
                 <hr/>
                 <div className="project">
                     <a href="https://ourworldindata.org" target="_blank"><img src={owidImg}/></a>
-                    <p>Since 2016 I've been working with some awesome researchers at the University of Oxford on <a href="https://ourworldindata.org">Our World in Data</a>. We're building a big collection of open knowledge, covering topics like <a href="https://ourworldindata.org/extreme-poverty">global poverty</a>, <a href="https://ourworldindata.org/financing-healthcare">healthcare financing</a> and <a href="https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions">climate change</a>.</p>
+                    <p>I work with some awesome researchers at the University of Oxford on <a href="https://ourworldindata.org">Our World in Data</a>. We're building a big collection of open knowledge, covering topics like <a href="https://ourworldindata.org/extreme-poverty">global poverty</a>, <a href="https://ourworldindata.org/financing-healthcare">healthcare financing</a> and <a href="https://ourworldindata.org/co2-and-other-greenhouse-gas-emissions">climate change</a>.</p>
                     <p>I'm responsible for the tech side of the project and spend most of my time working on our open source <a href="https://github.com/owid/owid-grapher">data visualization engine</a>. If you're interested in getting involved, you can check out some of our <a href="https://github.com/owid/owid-grapher/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22">GitHub issues</a>!</p>
                 </div>
             </section>
@@ -49,7 +54,7 @@ export default class Homepage extends React.Component<{ isClient: boolean, asset
                 <p>Most things I make are <a href="https://github.com/mispy">open source</a>, including <a href="https://github.com/mispy/mispy.me">this site</a></p>
             </footer>
             <script src="/puzzle.js"/>
-            <script src={this.props.assets['sunflower.js']}/>
+            <script src={this.props.assets['homepage.js']}/>
         </main>
 	}
 }
