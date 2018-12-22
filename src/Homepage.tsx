@@ -4,6 +4,7 @@ import {observer} from 'mobx-react'
 import * as _ from 'lodash'
 
 import {Metas} from './Metas'
+import {HeartButton} from './HeartButton'
 
 declare var require: any
 const styles = require('./Homepage.scss')
@@ -53,6 +54,7 @@ export default class Homepage extends React.Component<{ assets: {[key: string]: 
                 <p>I may take a while to respond to email. The best way to contact me is <a href="https://twitter.com/intent/tweet/?text=@m1sp%20Hi%20Mispy!">via Twitter</a>.</p>
                 <p>Most things I make are <a href="https://github.com/mispy">open source</a>, including <a href="https://github.com/mispy/mispy.me">this site</a></p>
             </footer>
+            <HeartButton/>
             <script src="https://mispy.me/puzzle.js"/>
             <script src={this.props.assets['homepage.js']}/>
         </main>
