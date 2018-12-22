@@ -26,7 +26,7 @@ export default class Post extends React.Component<{slug: string, assets: {[key: 
 
         return <main className={styles.post}>
             <Metas title={title} description={firstParagraph} path="/">
-                <link rel="stylesheet" type="text/css" href={assets['posts.css']}/>  
+                <link rel="stylesheet" type="text/css" href={`/${assets['posts.css']}`}/>  
             </Metas>
             <header>
                 <Link to="/"><img className={styles.profile} src={mispy} alt="Jaiden Mispy"/></Link>

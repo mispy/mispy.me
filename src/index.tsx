@@ -20,7 +20,7 @@ class Body extends React.Component<{path: string, assets: {[key: string]: string
     render() {
         return <body>
             <Helmet title="Jaiden Mispy">
-                <link rel="stylesheet" type="text/css" href={this.props.assets['build.css']}/>  
+                <link rel="stylesheet" type="text/css" href={`/${this.props.assets['build.css']}`}/>  
             </Helmet>
             <div id="app">  
                 {this.content()}
