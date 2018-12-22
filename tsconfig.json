@@ -8,13 +8,15 @@
         "module": "commonjs",
         "moduleResolution": "node",
         "jsx": "react",
-        "target": "es5",
+        "target": "es6",
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "forceConsistentCasingInFileNames": true,
-        "lib": ["dom", "es6", "esnext.asynciterable"],
+        "lib": ["dom", "es7", "esnext.asynciterable"],
         "plugins": [
             { "name": "tslint-language-service" }
-        ]
+        ],
+        "keyofStringsOnly": true
     },
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules", "public"]
 }

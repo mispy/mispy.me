@@ -3,9 +3,8 @@
 // for learning purposes-- if you want to make something similar, you might want
 // to consider using a framework like pixijs!
 
-import * as d3 from 'd3'
 import * as d3_chromatic from 'd3-scale-chromatic'
-import * as _ from 'lodash'
+import {scaleSequential, ScaleSequential} from 'd3-scale'
 
 const MAX_POINTS = 1000;
 const CIRCLE_SIZE = 0.014;
@@ -57,15 +56,36 @@ interface Point {
     y: number;
 }
 
-function getDistance(a: Point, b: Point) {
-    return Math.sqrt((b.x-a.x)*(b.x-a.x) + (b.y-a.y)*(b.y-a.y))
+function distanceSq(a: Point, b: Point) {
+    return (b.x-a.x)*(b.x-a.x) + (b.y-a.y)*(b.y-a.y)
+}
+
+interface RGBColor {
+    r: number
+    g: number
+    b: number
+}
+
+function parseColor(input: string): RGBColor {
+    if (input.substr(0,1)=="#") {
+        var collen=(input.length-1)/3;
+        var fact=[17,1,0.062272][collen-1];
+        return {
+            r: parseInt(input.substr(1,collen),16)*fact,
+            g: parseInt(input.substr(1+collen,collen),16)*fact,
+            b: parseInt(input.substr(1+2*collen,collen),16)*fact
+        };
+    } else {
+        const [r, g, b] = input.split("(")[1].split(")")[0].split(",").map(x => parseInt(x));
+        return {r, g, b}
+    }
 }
 
 interface SpiralPoint {
     curPos: Point;
     deltaPos: Point;
     initPos: Point;
-    color: d3.RGBColor
+    color: RGBColor
     colorPriority: number
 }
 
@@ -75,7 +95,7 @@ function isCanvas(canvas: HTMLElement): canvas is HTMLCanvasElement {
 
 interface Ripple {
     origin: Point
-    colorScale: d3.ScaleSequential<string>
+    colorScale: ScaleSequential<string>
     radius: number
     priority: number
 }
@@ -84,7 +104,7 @@ class Sunflower {
     points: SpiralPoint[] = []
     frame: number = 0
     ripples: Ripple[] = []
-    colorScales: d3.ScaleSequential<string>[] = Object.keys(d3_chromatic).filter(k => k.indexOf('interpolate') !== -1).map(k => (d3_chromatic as any)[k])
+    colorScales: ScaleSequential<string>[] = Object.keys(d3_chromatic).filter(k => k.indexOf('interpolate') !== -1).map(k => (d3_chromatic as any)[k])
     colorScalesIndex: number = 0
     ripplePriority: number = 0
 
@@ -113,14 +133,14 @@ class Sunflower {
                 curPos: {...initPos},
                 deltaPos,
                 initPos,
-                color: d3.color("#f5a44a") as d3.RGBColor,
+                color: parseColor("#f5a44a") as RGBColor,
                 colorPriority: 0
             });
         }
 
         this.ripples.push({
             origin: { x: 0, y: 0 },
-            colorScale: d3.scaleSequential(d3_chromatic.interpolateYlOrBr).domain([0, 1.7]),
+            colorScale: scaleSequential(d3_chromatic.interpolateYlOrBr).domain([0, 1.7]),
             radius: 2,
             priority: 0
         })
@@ -133,13 +153,13 @@ class Sunflower {
 
         const {colorScales, colorScalesIndex, points} = this
 
-        const closestPointToMouse = _.sortBy(points, point => getDistance(point.curPos, mouse))[0]
+        const closestPointToMouse = [...points].sort((a, b) => distanceSq(a.curPos, mouse) - distanceSq(b.curPos, mouse))[0]
         if (this.ripples.length >= 50)
             this.ripples = this.ripples.slice(1)
         
         this.ripples.push({
             origin: closestPointToMouse.curPos,
-            colorScale: d3.scaleSequential(colorScales[colorScalesIndex]).domain([0, 1.7]),
+            colorScale: scaleSequential(colorScales[colorScalesIndex]).domain([0, 1.7]),
             radius: 0,
             priority: this.ripplePriority++
         })
@@ -157,9 +177,9 @@ class Sunflower {
                 if (point.colorPriority && point.colorPriority > ripple.priority)
                     continue
 
-                const dist = getDistance(point.curPos, ripple.origin)
-                if (dist < ripple.radius) {
-                    point.color = d3.color(ripple.colorScale(dist)) as d3.RGBColor
+                const dist = distanceSq(point.curPos, ripple.origin)
+                if (dist < ripple.radius**2) {
+                    point.color = parseColor(ripple.colorScale(dist)) as RGBColor
                     point.colorPriority = ripple.priority
                 }                                    
 
@@ -489,4 +509,22 @@ export class SunflowerView {
         window.addEventListener("resize", onResize)
         onResize()
     }
+}
+
+const img = document.querySelector(".sunflower") as Element
+const div = document.createElement("div")
+div.className = "sunflower"
+
+img.replaceWith(div)
+
+try {
+    new SunflowerView(div)
+
+    const h1 = document.querySelector("h1") as Element
+    const p = document.createElement("p")
+    p.innerHTML = `<p>This pretty swirly <a href="https://github.com/mispy/mispy.me/blob/master/src/Sunflower.ts">WebGL thing</a> is a <a href="https://en.wikipedia.org/wiki/Phyllotaxis">phyllotaxis</a>. Try clicking on it!</p>`
+    h1.after(p)
+} catch (e) {
+    div.replaceWith(img)
+    console.error(e)
 }

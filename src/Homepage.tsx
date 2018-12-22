@@ -1,7 +1,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import {observer} from 'mobx-react'
-import {SunflowerView} from './Sunflower'
 import * as _ from 'lodash'
 
 declare var require: any
@@ -10,34 +9,9 @@ const mispyImg = require('./mispy.png')
 const sunflowerImg = require('./sunflower.png')
 const owidImg = require('./owid.png')
 
-declare var window: any
-window.homepageStart = function() {
-    const img = document.querySelector(".sunflower") as Element
-    const div = document.createElement("div")
-    div.className = "sunflower"
-
-    img.replaceWith(div)
-
-    try {
-        new SunflowerView(div)
-
-        const h1 = document.querySelector("h1") as Element
-        const p = document.createElement("p")
-        p.innerHTML = `<p>This pretty swirly <a href="https://github.com/mispy/mispy.me/blob/master/src/Sunflower.ts">WebGL thing</a> is a <a href="https://en.wikipedia.org/wiki/Phyllotaxis">phyllotaxis</a>. Try clicking on it!</p>`
-        h1.after(p)
-
-    } catch (e) {
-        div.replaceWith(img)
-        console.error(e)
-    }
-}
-
 @observer
-export default class Homepage extends React.Component<{ isClient: boolean }> {
+export default class Homepage extends React.Component<{ isClient: boolean, assets: {[key: string]: string} }> {
 	render() {
-        const {isClient} = this.props
-
-
         return <main className={styles.homepage}>
             <section className={styles.cover}>
                 <img className={styles.sunflower} src={sunflowerImg}/>
@@ -75,7 +49,7 @@ export default class Homepage extends React.Component<{ isClient: boolean }> {
                 <p>Most things I make are <a href="https://github.com/mispy">open source</a>, including <a href="https://github.com/mispy/mispy.me">this site</a></p>
             </footer>
             <script src="/puzzle.js"/>
-            <script async dangerouslySetInnerHTML={{__html: "window.homepageStart()"}}></script>
+            <script src={this.props.assets['sunflower.js']}/>
         </main>
 	}
 }

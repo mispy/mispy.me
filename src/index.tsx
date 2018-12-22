@@ -8,26 +8,20 @@ declare var require: any
 const faviconImg = require('./favicon.png')
 const sunflowerImg = require('./sunflower.png')
 
-class Body extends React.Component<{path: string, assets: string[]}> {
+class Body extends React.Component<{path: string, assets: {[key: string]: string}}> {
     content() {
         const {path} = this.props
 
         if (path == "/") {
-            return <Homepage isClient={false}/>
+            return <Homepage isClient={false} assets={this.props.assets}/>
         } else {
             return <Post params={{slug: path.replace('/', '')}}/>
         }           
     }
 
     render() {
-        const {assets} = this.props
-        const js = assets.filter(value => value.match(/\.js$/))
-
         return <body>
             <Helmet title="Jaiden Mispy"/>
-            {js.map(path =>
-                <script src={'/'+path}/>  
-            )}
             <div id="app">  
                 {this.content()}
             </div>
@@ -35,10 +29,9 @@ class Body extends React.Component<{path: string, assets: string[]}> {
     }
 }
 
-class Head extends React.Component<{path: string, assets: string[], head: HelmetData}> {
+class Head extends React.Component<{path: string, assets: {[key: string]: string}, head: HelmetData}> {
     render() {
         const {head, assets, path} = this.props
-        const css = assets.filter(value => value.match(/\.css$/))
 
         const description = `Since 2016 I've been working with some awesome researchers at the University of Oxford on Our World in Data. We're building a big collection of open knowledge, covering topics like global poverty, healthcare financing and climate change.`
 
@@ -59,9 +52,7 @@ class Head extends React.Component<{path: string, assets: string[], head: Helmet
             <meta property="og:description" content={description}/>
             <meta property="og:image" content={"https://mispy.me/" + sunflowerImg}/>
             {head.meta.toComponent()}
-            {css.map(cssPath =>
-                <link rel="stylesheet" type="text/css" href={'/'+cssPath}/>  
-            )}       
+            <link rel="stylesheet" type="text/css" href={assets['build.css']}/>  
             <link rel="icon" href={faviconImg}/>         
             {head.link.toComponent()}
         </head>
@@ -69,7 +60,12 @@ class Head extends React.Component<{path: string, assets: string[], head: Helmet
 }
 
 export default (locals: any, callback: (val: null, html: string) => void) => {
-    const assets = Object.keys(locals.webpackStats.compilation.assets)
+    const assets = locals.assets as {[name: string]: string}
+    for (const key in assets) {
+        assets[key+'.js'] = assets[key]
+        assets[key+'.css'] = assets[key].replace(/.js$/, '.css')
+    }
+
     const bodyStr = ReactDOMServer.renderToString(<Body path={locals.path} assets={assets}/>)
     const head = Helmet.renderStatic()
     const headStr = ReactDOMServer.renderToString(<Head path={locals.path} head={head} assets={assets}/>)

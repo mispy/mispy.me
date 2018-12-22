@@ -12,7 +12,10 @@ module.exports = (env, argv) => {
     return {
         context: __dirname,
         mode: argv.mode||'development',
-        entry: path.join(__dirname, 'src/index.tsx'),
+        entry: {
+            build: path.join(__dirname, 'src/index.tsx'),
+            sunflower: path.join(__dirname, 'src/Sunflower.ts')
+        },
         output: {
             path: path.join(__dirname, "build"),
             filename: "assets/[name].js",
