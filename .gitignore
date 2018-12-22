@@ -4,3 +4,4 @@ node_modules
 netlifyctl-debug.log
 dist
 .DS_Store
+.netlify
