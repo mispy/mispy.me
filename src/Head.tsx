@@ -55,7 +55,6 @@ class Head extends React.Component<{path: string, assets: {[key: string]: string
             <meta property="og:image" content={"https://mispy.me/" + sunflowerImg}/>
             {head.meta.toComponent()}
             <link rel="stylesheet" type="text/css" href={assets['build.css']}/>  
-            <link rel="icon" href={faviconImg}/>         
             {head.link.toComponent()}
         </head>
     }
