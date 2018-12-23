@@ -24,7 +24,6 @@ export class Metas extends React.Component<{ path: string, title: string, descri
             <meta property="og:url" content={"https://mispy.me" + path}/>
             <meta property="og:description" content={description}/>
             <meta property="og:image" content={"https://mispy.me/" + sunflowerImg}/>
-            <link rel="icon" href={faviconImg}/>
             {children}
         </Helmet>
     }
