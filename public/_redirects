@@ -1,3 +1,5 @@
 /code/positivity-pokemon https://plusle.mispy.me 301
 /code/spdgrid https://spdgrid.mispy.me 301
+/taxicab https://mispy-taxicab-spheres.netlify.com/taxicab 200
+/taxicab/ /taxicab 301
 /taxicab/* https://mispy-taxicab-spheres.netlify.com/taxicab/:splat 200
