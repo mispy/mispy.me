@@ -8,7 +8,6 @@ import posts from '../posts'
 import {Metas} from './Metas'
 
 declare var require: any
-const styles = require('./index.scss')
 const mispy = require('./mispy.png')
 
 export default class Post extends React.Component<{slug: string, assets: {[key: string]: string}}> {   
@@ -24,7 +23,7 @@ export default class Post extends React.Component<{slug: string, assets: {[key: 
         const $ = cheerio.load(body)
         const firstParagraph = $($("p").get(0)).text() as string
 
-        return <main className={styles.post}>
+        return <main className="Post">
             <Metas title={title} description={firstParagraph} path="/">
                 <link rel="stylesheet" type="text/css" href={`/${assets['posts.css']}`}/>  
             </Metas>

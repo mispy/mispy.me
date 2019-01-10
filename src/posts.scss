@@ -1,2 +1,90 @@
+@import 'index.scss';
 @import '~highlight.js/styles/monokai-sublime.css';
 @import '~font-awesome/css/font-awesome.css';
+
+.post {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.post header {
+	padding: 2em 0;
+}
+
+.post h1 {
+	font-size: 2.8em;
+    text-indent: -2px;	
+    margin: 0;
+    margin-top: 0.1em;
+}
+
+.post article {
+	width: 90%;
+	max-width: 800px;
+}
+
+
+.post img {
+	max-width: 100%;
+	display: block;
+	margin: auto;
+}
+
+.post pre > code {
+	display: block;
+	overflow-x: auto;
+	padding: 0.5em;
+	background: #23241f;
+	color: white;
+	font-size: 0.8em;
+}
+
+.post footer {
+	max-width: 800px;
+	width: 90%;
+	padding-top: 2em;
+	margin-bottom: 4em;
+	border-top: #EBF2F6 1px solid;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.post footer h4 {
+	margin-bottom: 0.3em;
+}
+
+.post footer .author ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+    color: #9EABB3;
+    font-style: italic;	
+    font-size: 0.9em;
+}
+
+.post footer .author li {
+	float: left;
+}
+
+.post footer .author li:last-child {
+	margin-left: 10px;
+}
+
+.post footer .author li:last-child:before {
+	content: "•";
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.post footer .share a {
+	color: #3A4145;
+	font-size: 1.5em;
+	margin-right: 0.5em;
+}
+
+.post footer .share a:hover {
+    color: #f5aa44;	
+}
