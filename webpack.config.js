@@ -67,7 +67,7 @@ module.exports = (env, argv) => {
             new ExtractTextPlugin('assets/[name].css'),
     
             new StaticSiteGeneratorPlugin({
-                paths: ['/', '/links'].concat(postSlugs.map(slug => '/'+slug)),
+                paths: ['/', '/links.html'].concat(postSlugs.map(slug => '/'+slug)),
                 locals: { 'isProduction': isProduction },
                 globals: { window: {} }
             }),

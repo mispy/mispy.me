@@ -14,7 +14,7 @@ class Body extends React.Component<{path: string, assets: {[key: string]: string
 
         if (path === "/") {
             return <Homepage assets={this.props.assets}/>
-        } else if (path === "/links") {
+        } else if (path === "/links.html") {
             return <LinksPage/>
         } else {
             return <Post slug={path.replace('/', '')} assets={this.props.assets}/>
