@@ -28,7 +28,7 @@ export default class Post extends React.Component<{slug: string, assets: {[key: 
                 <link rel="stylesheet" type="text/css" href={`/${assets['posts.css']}`}/>  
             </Metas>
             <header>
-                <Link to="/"><img className={styles.profile} src={mispy} alt="Jaiden Mispy"/></Link>
+                <Link to="/"><img className="profile" src={mispy} alt="Jaiden Mispy"/></Link>
             </header>
             <article>
                 <time dateTime={date}>{moment(date).format('DD MMMM YYYY')}</time>
@@ -36,14 +36,14 @@ export default class Post extends React.Component<{slug: string, assets: {[key: 
                 <div dangerouslySetInnerHTML={{__html: body}}/>
             </article>
             <footer>
-                <section className={styles.author}>
+                <section className="author">
                     <h4>Jaiden Mispy</h4>
                     <ul>
                         <li>Perth, Australia</li>
                         <li><a href="/">https://mispy.me</a></li>
                     </ul>
                 </section>
-                <section className={styles.share}>
+                <section className="share">
                     <h4>Share this post</h4>
                     <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(canonicalUrl)}`} target="_blank"><i className="fa fa-twitter-square"></i></a>
                     <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}"`} target="_blank"><i className="fa fa-facebook-square"></i></a>
