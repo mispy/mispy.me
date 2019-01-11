@@ -6,7 +6,7 @@ const linksText = `
 
 
 
-LEARNING TOOLS
+LEARNING
 
 http://sci-hub.tw/ - Guerilla open access to scientific research. Bypasses paywalls.
 
