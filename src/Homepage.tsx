@@ -55,7 +55,6 @@ export default class Homepage extends React.Component<{ assets: {[key: string]: 
                 <p>Most things I make are <a href="https://github.com/mispy">open source</a>, including <a href="https://github.com/mispy/mispy.me">this site</a></p>
             </footer>
             <HeartButton/>
-            <script src="https://mispy.me/puzzle.js"/>
             <script src={this.props.assets['homepage.js']}/>
         </main>
 	}

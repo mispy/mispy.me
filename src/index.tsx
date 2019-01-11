@@ -3,15 +3,19 @@ import * as ReactDOMServer from 'react-dom/server'
 import {Helmet, HelmetData} from 'react-helmet'
 import Homepage from './Homepage'
 import Post from './Post'
+import { LinksPage } from './LinksPage'
 
 declare var require: any
+require("./index.scss")
 
 class Body extends React.Component<{path: string, assets: {[key: string]: string}}> {
     content() {
         const {path} = this.props
 
-        if (path == "/") {
+        if (path === "/") {
             return <Homepage assets={this.props.assets}/>
+        } else if (path === "/links") {
+            return <LinksPage/>
         } else {
             return <Post slug={path.replace('/', '')} assets={this.props.assets}/>
         }           
@@ -25,6 +29,7 @@ class Body extends React.Component<{path: string, assets: {[key: string]: string
             <div id="app">  
                 {this.content()}
             </div>
+            <script src="https://mispy.me/puzzle.js"/>
         </body>
     }
 }

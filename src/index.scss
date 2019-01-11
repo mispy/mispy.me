@@ -70,3 +70,33 @@ p {
 	margin: 1.6em 0;
 	line-height: 1.4em;
 }
+
+.LinksPage {
+	font-size: 1rem;
+
+	h1 {
+		margin-bottom: 1rem;
+	}
+
+	h2 {
+		text-transform: uppercase;
+		color: #333;
+		opacity: 0.8;
+		font-size: 1rem;
+	}
+
+	article {
+		padding-top: 20px;
+		padding-left: 3vw;
+		padding-right: 3vw;
+	}
+
+	article > div {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	li {
+		line-height: 1.5em;
+	}
+}
