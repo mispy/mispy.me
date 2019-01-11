@@ -8,9 +8,9 @@ const linksText = `
 
 LEARNING
 
-http://sci-hub.tw/ - Guerilla open access to scientific research. Bypasses paywalls.
+http://sci-hub.tw/ - Open access to millions of scientific papers
 
-http://libgen.io/ - Guerilla open access repository of knowledge. Basically Sci-Hub for books.
+http://libgen.io/ - Open access to millions of books
 
 http://custodians.online/ - A quick summary of why sites like Sci-Hub and Libgen exist and the challenges they face
 
