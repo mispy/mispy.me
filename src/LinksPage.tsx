@@ -26,6 +26,8 @@ https://www.core-econ.org/ - Open access economics textbook
 
 https://explorabl.es/ - Collection of explorable explanations on various topics
 
+https://www.redblobgames.com/ - Deep explorable explanations on computer science topics relevant to gamedev
+
 http://www.gwern.net/ - Essays about many unusual research subjects
 
 LIFE & MENTAL HEALTH
