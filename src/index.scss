@@ -79,7 +79,7 @@ p {
 	}
 
 	h2 {
-		text-transform: uppercase;
+		text-transform: lowercase;
 		color: #333;
 		opacity: 0.8;
 		font-size: 1rem;
@@ -98,5 +98,6 @@ p {
 
 	li {
 		line-height: 1.5em;
+		margin-bottom: 0.3em;
 	}
 }

@@ -16,7 +16,17 @@ http://custodians.online/ - A quick summary of why sites like Sci-Hub and Libgen
 
 https://calibre-ebook.com/ - Converts ebook files for compatibility with Kindles
 
+https://apps.ankiweb.net/ - A tool for memorizing anything using spaced repetition of flashcards. Michael Nielsen writes about it in his essay on <a href="http://augmentingcognition.com/ltm.html">augmenting long-term memory</a>.
+
 https://www.khanacademy.org/ - Free interactive educational material, mainly targeted towards high school level
+
+https://ourworldindata.org/ - Data & research about long-term global change
+
+https://www.core-econ.org/ - Open access economics textbook
+
+https://explorabl.es/ - Collection of explorable explanations on various topics
+
+http://www.gwern.net/ - Essays about many unusual research subjects
 
 LIFE & MENTAL HEALTH
 
@@ -26,8 +36,7 @@ https://woebot.io/ - Chatbot app that teaches you CBT and mindfulness techniques
 
 https://ourworldindata.org/mental-health - A global overview of how prevalent mental health conditions are and the risk factors involved. Useful perspective for how individual struggles fit into the big picture.
 
-
-CODING - TOOLS
+PROGRAMMING
 
 https://code.visualstudio.com/ - My main IDE and the most popular code editor among JavaScript developers as of 2018. Excellent autocompletion, especially with TypeScript.
 
@@ -37,14 +46,11 @@ https://unity3d.com/ - Popular game engine mainly based on C#. A neat thing abou
 
 https://www.jetbrains.com/decompiler/ - .NET decompiler. The C# output it produces is easily readable in most cases.
 
-
-CODING - META
-
-https://adventofcode.com/ - A series of daily programming puzzles that run from the start of December until Christmas each year. I did all 25 days in 2018 with a friend and had a great time. If done as a speed contest, encourages you to learn a lot of fast coding tricks.
+https://adventofcode.com/ - Daily programming puzzles from the start of December until Christmas each year. I did all 25 days in 2018 with a friend and had a great time.
 
 https://stateofjs.com/ - Survey data on the tools that JavaScript devs are using each year. Useful to get a picture of what new stuff might be worth trying out.
 
-https://stackoverflow.com/ - Everyone knows Stack Overflow, of course! Something I often forget is that you can answer your own questions on SO, so you can use it as a public searchable repository you dump knowledge into.
+https://stackoverflow.com/ - Remember that you can answer your own questions on SO, so you can use it as a public searchable repository you dump knowledge into.
 
 https://stackoverflow.com/jobs - Companies pay Stack Overflow so they can advertise jobs here. They're usually pretty high-quality positions.
 
@@ -78,6 +84,8 @@ BOOKS
 https://blog.ncase.me/the-most-meaningful-books-i-read-in-2018/ - Nicky Case makes a list of the most meaningful books they read each year
 
 https://patrickcollison.com/bookshelf - Patrick Collison's reading list
+
+https://www.gwern.net/Book-reviews - Gwern's super long list of book reviews
 
 NICE WEB DESIGN
 
@@ -130,7 +138,7 @@ export class LinksPage extends React.Component {
                     <h2>{g.title}</h2>
                     {g.desc && <p>{g.desc}</p>}
                     <ul>
-                        {g.links.map((l: any) => <li><a href={l.href}>{l.href.replace(/https?:\/\//, '').replace(/\/$/, '').replace('www.', '')}</a> - {l.desc}</li>)}
+                        {g.links.map((l: any) => <li><a href={l.href}>{l.href.replace(/https?:\/\//, '').replace(/\/$/, '').replace('www.', '')}</a> - <span dangerouslySetInnerHTML={{__html: l.desc}}/></li>)}
                     </ul>
                 </section>)}
             </article>
