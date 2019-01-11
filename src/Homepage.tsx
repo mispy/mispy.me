@@ -18,7 +18,7 @@ export default class Homepage extends React.Component<{ assets: {[key: string]: 
         const description = `I work with some awesome researchers at the University of Oxford on Our World in Data. We're building a big collection of open knowledge, covering topics like global poverty, healthcare financing and climate change.`
 
         return <main className={styles.homepage}>
-            <Metas title="Mispy's Website" description={description} path="/"/>
+            <Metas title="Mispy's Website" description={description} path="/" img={"https://mispy.me/" + sunflowerImg}/>
             <section className={styles.cover}>
                 <img className={styles.sunflower} src={sunflowerImg}/>
                 <h1>Mispy's Website</h1>
@@ -46,6 +46,7 @@ export default class Homepage extends React.Component<{ assets: {[key: string]: 
                 <ul>
                     <li>I helped write this post about the <a href="https://ourworldindata.org/child-mortality-globally">huge decline in child mortality</a>. Perhaps more than anything else, learning about this fundamentally changed the way I see the world.</li>
                     <li>You can read my <a href="https://usesthis.com/interviews/jaiden.mispy/">interview on Uses This</a> about web development tools and working with scientists as a programmer.</li>
+                    <li>I have a collection of <a href="/links">links</a> to useful online resources I've discovered over the years.</li>
                     <li>Many years ago I made a <a href="https://github.com/mispy/twitter_ebooks">twitterbot library</a>. It was <a href="/the-mysterious-nature-of-bots/">weirdly popular</a>.</li>
                 </ul>
             </section>

@@ -40,7 +40,11 @@ PROGRAMMING
 
 https://code.visualstudio.com/ - My main IDE and the most popular code editor among JavaScript developers as of 2018. Excellent autocompletion, especially with TypeScript.
 
-http://www.typescriptlang.org/ - My favorite web development language. The types give you full object property autocompletion and make it easier to reason about code, especially as the complexity of a project increases.
+https://www.typescriptlang.org/ - My favorite web development language. The types give you full object property autocompletion and make it easier to reason about code, especially as the complexity of a project increases.
+
+https://www.netlify.com/ - Fantastic modern web host centered around static site building
+
+https://jamstack.org - Summary of the JAMstack, my preferred way of doing web development
 
 https://unity3d.com/ - Popular game engine mainly based on C#. A neat thing about the predominance of Unity is that many games can now be easily decompiled from the .NET assembly to read their source.
 
@@ -58,8 +62,15 @@ https://jobs.github.com/positions - Companies pay GitHub so they can advertise j
 
 https://www.research.net/ - Service for conducting user surveys, used by GitHub 
 
-https://axdraft.com/en/home#how-it-works - Axdraft, tool for drafting legal documents
+https://axdraft.com - Tool for drafting legal documents
 
+DATA VISUALIZATION
+
+https://www.autodeskresearch.com/publications/samestats - Shows how data visualization can reveal trends that summary statistics totally miss, by generating very different datasets with identical statistical properties
+
+https://www.timeanddate.com/sun/uk/oxford - Sun graphs for different areas of the world
+
+http://graphics.wsj.com/infectious-diseases-and-vaccines/ - Heatmaps showing dramatic falloff of infection rates after introduction of vaccines
 
 BULK DATA SOURCES
 
@@ -67,17 +78,23 @@ https://data.worldbank.org/ - Major source for research on global development. H
 
 https://unstats.un.org - UN data covering various topics including population growth, SDG indicators, gender equality
 
-http://www.fao.org/faostat/en/#home - Food and agriculture data by country going back to 1961
+http://www.fao.org/faostat - Food and agriculture data by country going back to 1961
+
+https://www.transitwiki.org/TransitWiki/index.php/Publicly-accessible_public_transportation_data - Index of public transportation data for cities around the world
 
 https://www.bls.gov - US Bureau of Labor Statistics
 
 SPECIFIC RESEARCH
 
-https://www.autodeskresearch.com/publications/samestats - Shows how data visualization can reveal trends that summary statistics totally miss, by generating very different datasets with identical statistical properties
+https://www.gapminder.org/test - Gapminder's test for misconceptions about the world. It's remarkable how easy it is to not know this stuff!
 
 http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.368.8509&rep=rep1&type=pdf - Self-discipline outdoes IQ in predicting academic performance of adolescents
 
 https://www.apa.org/practice/guidelines/transgender.pdf - The APA guidelines on best practice psychology for working with transgender and gender nonconforming people. Useful reference for discussions with people who respect scientific inquiry but aren't as familiar with LGBT issues.
+
+http://www.dartmouth.edu/~nyhan/nyhan-reifler.pdf - Attempts to correct political misconceptions by presenting contrary evidence in the wrong ways can backfire and make people even more resolute
+
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.395.886&rep=rep1&type=pdf - People are more likely to believe statements if they are presented poetically
 
 BOOKS
 
@@ -87,9 +104,23 @@ https://patrickcollison.com/bookshelf - Patrick Collison's reading list
 
 https://www.gwern.net/Book-reviews - Gwern's super long list of book reviews
 
+https://www.goodreads.com/user/show/81203600-jaiden-mispy - My Goodreads account
+
 NICE WEB DESIGN
 
-http://www.lateralmag.com/ - Online science magazine, makes good use of artistic illustrations
+https://pudding.cool - Super fancy embedded datavis articles
+
+https://distill.pub/ - A machine learning research journal that makes good use of interactives
+
+http://www.lateralmag.com/ - Online science magazine, lots of artistic illustrations
+
+https://seeing-theory.brown.edu - Beautiful online textbook about probability and statistics
+
+https://www.wanikani.com/ - Adorable slightly animated landing page
+
+http://nkwiatek.com/experiments/ascii - ASCII gas physics simulation
+
+https://tea.fncombo.me/ - Lovely little filterable mobile-friendly personal tea collection app 
 
 MISC
 
