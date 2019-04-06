@@ -30,6 +30,8 @@ https://www.redblobgames.com/ - Deep explorable explanations on computer science
 
 http://www.gwern.net/ - Essays about many unusual research subjects
 
+https://spaciecat.github.io/cells/ - Explorable 
+
 LIFE & MENTAL HEALTH
 
 https://80000hours.org/ - Research on what makes a fulfilling job. Main conclusion is that salary is important but only up to a certain point, after which doing work that helps others matters a lot.
