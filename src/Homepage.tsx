@@ -46,7 +46,7 @@ export default class Homepage extends React.Component<{ assets: {[key: string]: 
                 </ul>
             </section>
             <footer>
-                <p><a href="mailto:jaiden@mispy.me">jaiden@mispy.me</a> / <a href="https://twitter.com/m1sp">@m1sp</a></p>
+                <p><a href="mailto:jaiden@mispy.me">jaiden@mispy.me</a></p>
                 <p>Most things I make are <a href="https://github.com/mispy">open source</a>, including <a href="https://github.com/mispy/mispy.me">this site</a></p>
             </footer>
             <HeartButton/>
