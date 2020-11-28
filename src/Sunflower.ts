@@ -6,8 +6,8 @@
 import * as d3_chromatic from 'd3-scale-chromatic'
 import {scaleSequential, ScaleSequential} from 'd3-scale'
 
-const MAX_POINTS = 1000;
-const CIRCLE_SIZE = 0.014;
+const MAX_POINTS = 800;
+const CIRCLE_SIZE = 0.020;
 const MAX_TIME = 24;
 const SECONDS_PER_TIME = 1000;
 // Assume 60fps.
@@ -20,8 +20,8 @@ const MAX_FRAME = MAX_TIME * FRAMES_PER_TIME;
 // note that the "size" of the viewport we're working with
 // [-1, 1] x [-1, 1]
 // is 2
-const DIST_MULTIPLIER = 0.030;
-const ANGLE_MULTIPLIER = -2 * Math.PI / MAX_TIME;
+const DIST_MULTIPLIER = 0.035;
+let ANGLE_MULTIPLIER = -1 * Math.PI / MAX_TIME;
 
 const VERTEX_SHADER_INSTANCING = `
 precision mediump float;
@@ -146,6 +146,32 @@ class Sunflower {
         })
 
         this.expandRipples()
+    }
+
+    changeSpeed(multiplier: number) {
+        for (let i = 0; i < this.points.length; i++) {
+            const dist = DIST_MULTIPLIER * Math.sqrt(i);
+            // Avoid rendering points out of the viewport.
+            if (dist > Math.SQRT2 + CIRCLE_SIZE) break;
+            // This is the setup, so we can do some expensive math here.
+            // (read: I'm too lazy to figure out)
+            const pointAngleMultiplier = multiplier * i;
+
+            const angle = pointAngleMultiplier * INITIAL_TIME;
+            const initPos: Point = {
+                x: dist * Math.cos(angle),
+                y: dist * Math.sin(angle)
+            };
+            // How much does the angle change per frame?
+            const deltaAngle = pointAngleMultiplier / FRAMES_PER_TIME;
+            const deltaPos: Point = {
+                x: Math.cos(deltaAngle),
+                y: Math.sin(deltaAngle)
+            };
+
+            this.points[i].initPos = initPos
+            this.points[i].deltaPos = deltaPos
+        }
     }
 
     ripple(mouse: Point) {
@@ -489,7 +515,15 @@ export class SunflowerView {
         function onMouseUp() {
             isMouseDown = false
         }
-    
+
+        function onMouseEnter() {
+            sunflower.changeSpeed(-20 * Math.PI / MAX_TIME)
+        }
+
+        function onMouseLeave() {
+            sunflower.changeSpeed(-1 * Math.PI / MAX_TIME)
+        }
+
         canvas.onmousemove = onMouseMove
         canvas.onmousedown = onMouseDown
         canvas.onmouseup = onMouseUp
@@ -498,6 +532,8 @@ export class SunflowerView {
         canvas.ontouchstart = onMouseDown
         canvas.ontouchend = onMouseUp
         canvas.ontouchmove = onMouseMove
+        canvas.onmouseenter = onMouseEnter
+        canvas.onmouseleave = onMouseLeave
 
         function onResize() {
             const rect = div.getBoundingClientRect()

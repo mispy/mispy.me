@@ -60,6 +60,9 @@ export default class Homepage extends React.Component<{ assets: {[key: string]: 
                     <img src="/images/135.png"/>
                 </footer></a>
             </section>
+            <section className="sunflowerSection">
+                <img src={sunflowerImg} className="sunflower"/>
+            </section>
             <script src={this.props.assets['homepage.js']}/>
         </main>
 	}

@@ -68,7 +68,7 @@
 		}
 	}
 
-	footer {
+	section footer {
 		position: absolute;
 		left: 0;
 		bottom: 0;
@@ -100,11 +100,13 @@
 		}
 	}
 
-	hr {
-		width: 200px;
-		border-top: 5px solid #50585D;
-		margin: 1em;
+	section.sunflowerSection {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0;
 	}
+
 
 	// section:not(.cover), footer {
 	// 	width: 100%;
@@ -118,10 +120,33 @@
 	// }
 }
 
+.sunflower canvas {
+	touch-action: none;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	cursor: pointer;
+}
+
 @media (min-width: 901px) {
-	section {
+	section:not(.sunflowerSection) {
 		min-width: 500px;
 		max-width: 500px;
+	}
+	
+	section.sunflowerSection {
+		flex-grow: 1;
+
+		.sunflower {
+			width: calc(100% - 3rem);
+			height: 100%;
+			display: flex;
+			align-items: center;
+		}
 	}
 }
 
