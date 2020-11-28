@@ -59,3 +59,9 @@ export default (locals: any, callback: (val: null, html: string) => void) => {
 
     callback(null, "<html>"+headStr+bodyStr+"</html>")
 };
+
+
+declare const module: any
+if (module.hot) {
+    module.hot.accept()
+}

@@ -11,16 +11,13 @@ html {
 	font-size: 16px;
 }
 
+* {
+	box-sizing: border-box;
+}
+
 @media (max-width: 900px) {
 	html {
 		font-size: 14px;
-	}
-}
-
-
-@media (max-width: 600px) {
-	html {
-		font-size: 10px;
 	}
 }
 
@@ -31,7 +28,7 @@ body {
 h1,h2,h3,h4,h5,h6 {
     text-rendering: optimizeLegibility;
     line-height: 1;
-    margin: 0;
+    margin-top: 0;
     font-family: 'Open Sans',sans-serif;
 }
 
@@ -67,7 +64,8 @@ time {
 }
 
 p {
-	margin: 1.6em 0;
+	margin: 0;
+	margin-block-end: 1.6em;
 	line-height: 1.4em;
 }
 
