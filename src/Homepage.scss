@@ -23,8 +23,6 @@
 		position: relative;
 		padding: 2rem;
 		border-right: 1px solid #ccc;
-		min-width: 500px;
-		max-width: 500px;
 		overflow-y: auto;
 
 		h2 {
@@ -65,7 +63,8 @@
 			height: 48px;
 			filter: sepia(100%);
 			opacity: 0.5;
-			margin-right: 1rem;	
+			margin-right: 0.5rem;	
+			margin-left: 0.5rem;	
 		}
 	}
 
@@ -119,9 +118,20 @@
 	// }
 }
 
+@media (min-width: 901px) {
+	section {
+		min-width: 500px;
+		max-width: 500px;
+	}
+}
+
 @media (max-width: 900px) {
 	.homepage {
 		display: block;
+	}
+
+	section {
+		border-right: none;
 	}
 
 	section footer {
