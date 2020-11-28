@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const fs = require('fs')
 const StaticSiteGeneratorPlugin = require('static-site-generator-webpack-plugin')
 const postSlugs = fs.readdirSync(path.join(__dirname, 'posts')).filter(file => !file.match(/.tsx$/))
+const sass = require('sass')
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production'
@@ -43,7 +44,7 @@ module.exports = (env, argv) => {
                 },
                 {
                     test: /\.scss$/,
-                    loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: ['css-loader?modules&importLoaders=true&localIdentName=[local]', 'sass-loader'] })
+                    loader: ExtractTextPlugin.extract({ fallback: 'style-loader', use: ['css-loader?modules&importLoaders=true&localIdentName=[local]', { loader: 'sass-loader', options: { implementation: sass }}] })
                 },
                 {
                     test: /\.(jpe?g|png|ttf|eot|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
