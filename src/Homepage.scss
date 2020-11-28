@@ -39,7 +39,7 @@
 			height: 200px;
 			background-image: url(/images/dawnguide-footer.svg);
 			background-size: 100% auto;
-			opacity: 0.5;
+			opacity: 0.7;
 		}
 	}
 
@@ -143,6 +143,7 @@
 
 		.sunflower {
 			width: calc(100% - 3rem);
+			max-width: 20vw;
 			height: 100%;
 			display: flex;
 			align-items: center;
@@ -168,6 +169,10 @@
 	}
 
 	section:not(.intro) footer {
+		display: none !important;
+	}
+
+	section.sunflowerSection {
 		display: none !important;
 	}
 }
