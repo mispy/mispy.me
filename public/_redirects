@@ -2,3 +2,7 @@
 /code/spdgrid https://spdgrid.mispy.me 301
 /taxicab https://mispy-taxicab-spheres.netlify.com/taxicab 200
 /taxicab/* https://mispy-taxicab-spheres.netlify.com/taxicab/:splat 200
+/aoc-wires https://mispy-aoc-wires.netlify.app/aoc-wires 200
+/aoc-wires/* https://mispy-aoc-wires.netlify.app/aoc-wires/:splat 200
+/aoc-orbits https://mispy-aoc-orbits.netlify.app/aoc-orbits 200
+/aoc-orbits/* https://mispy-aoc-orbits.netlify.app/aoc-orbits/:splat 200
