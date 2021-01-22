@@ -135,10 +135,14 @@
 	
 		section.intro footer {
 			padding: 2rem;
+
+			> p {
+				margin-bottom: 0;
+			}
 		}
 	
 		section.little footer {
-			padding: 2rem 0;
+			padding-bottom: 2rem;
 		}
 	
 		section.sunflowerSection {
