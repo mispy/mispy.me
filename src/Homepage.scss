@@ -61,28 +61,16 @@
 	}
 
 	section footer {
-		div:first-child {
+		color: #666;
+		div {
 			display: flex;
 			align-items: center;
 			margin-bottom: 1.6em;
-
-			a:first-child {
-				margin: 0;
-				margin-right: 0.5rem;
-			}
-
-			a {
-				margin-left: 0.5rem;
-			}
-
-			.HeartButton {
-				margin-left: auto;
-			}
+			white-space: pre;
 		}
-
-		p:last-child {
+		
+		div:last-child {
 			opacity: 0.8;
-			font-size: 1.1rem;
 		}
 	}
 
@@ -189,4 +177,5 @@
 
 .HeartButton {
 	width: 1em;
+	height: 0.8em;
 }
