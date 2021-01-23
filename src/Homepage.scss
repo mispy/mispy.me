@@ -124,7 +124,7 @@
 		section.intro footer {
 			padding: 2rem;
 
-			> p {
+			> div:last-child {
 				margin-bottom: 0;
 			}
 		}
