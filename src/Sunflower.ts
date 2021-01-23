@@ -185,7 +185,7 @@ class Sunflower {
         for (const ripple of ripples) {
             if (ripple.radius >= 3) continue
 
-            ripple.radius += (1 / 10) * (deltaTime||60)/60
+            ripple.radius += (1 / 15) * (deltaTime||60)/60
 
             for (const point of points) {
                 if (point.colorPriority && point.colorPriority > ripple.priority)
@@ -196,7 +196,6 @@ class Sunflower {
                     point.color = parseColor(ripple.colorScale(dist)) as RGBColor
                     point.colorPriority = ripple.priority
                 }
-
             }
         }
     }
@@ -207,7 +206,7 @@ class Sunflower {
             const point = this.points[i]
             const { x: oldX, y: oldY } = point.curPos
 
-            const deltaAngle = (point.pointAngleMultiplier / FRAMES_PER_TIME)
+            const deltaAngle = (point.pointAngleMultiplier / FRAMES_PER_TIME) * (deltaTime/60)
             const dX = Math.cos(deltaAngle)
             const dY = Math.sin(deltaAngle)
             
@@ -504,11 +503,11 @@ export class SunflowerView {
         }
 
         function onMouseEnter() {
-            sunflower.changeSpeed(-25 * Math.PI / MAX_TIME)
+            sunflower.changeSpeed(-80 * Math.PI / MAX_TIME)
         }
 
         function onMouseLeave() {
-            sunflower.changeSpeed(-2 * Math.PI / MAX_TIME)
+            sunflower.changeSpeed(-10 * Math.PI / MAX_TIME)
         }
 
         canvas.onmousemove = onMouseMove
