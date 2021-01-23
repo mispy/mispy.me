@@ -27,7 +27,7 @@
     "front-matter": "^2.1.2",
     "front-matter-loader": "^0.1.2",
     "highlight-loader": "^0.7.2",
-    "highlight.js": "^9.9.0",
+    "highlight.js": "^10.4.1",
     "html-loader": "^0.4.5",
     "json-loader": "^0.5.7",
     "lodash": "^4.17.19",
