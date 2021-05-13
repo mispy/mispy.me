@@ -1,5 +1,4 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import { observer } from 'mobx-react'
 import * as _ from 'lodash'
 
@@ -16,11 +15,11 @@ export default class Homepage extends React.Component<{ assets: { [key: string]:
         const description = `Hi, I'm Jaiden (also known as Mispy)! I work part-time as a freelance web developer, and in my spare hours I do some projects you can find on this site.`
 
         return <main className={styles.homepage}>
-            <Metas title="Jaiden Mica" description={description} path="/" img={"https://mispy.me/" + sunflowerImg} />
+            <Metas title="Jaiden Mispy" description={description} path="/" img={"https://mispy.me/" + sunflowerImg} />
             <section className="intro">
                 <div>
-                    <h1>Jaiden Mica</h1>
-                    <p>Hi, I'm Jaiden (also known as Mispy)! I work part-time as a freelance web developer, and in my spare hours I do some projects here. I originally studied biology at university.</p>
+                    <h1>Jaiden Mispy</h1>
+                    <p>Hi, I'm Jaiden, or mostly just Mispy online! I work part-time as a freelance web developer, and in my spare hours I do some projects here. I originally studied biology at university.</p>
                     <p>I try to lead a peaceful life filled with quiet compassion and playful curiosity, and I think it would be nice to make this an achievable option for everyone.</p>
                     <p>In the past, I worked with researchers at the University of Oxford to build a bunch of the initial structure of <a href="https://ourworldindata.org/">Our World in Data</a>.</p>
                     <p>I'm a little shy, but I like to make cool new internet friends (and sometimes travel to meet them!), so feel free to send me a message.</p>
