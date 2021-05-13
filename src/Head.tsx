@@ -21,7 +21,7 @@ class Body extends React.Component<{path: string, assets: {[key: string]: string
 
     render() {
         return <body>
-            <Helmet title="Jaiden Mispy"/>
+            <Helmet title="Jaiden Mica"/>
             <div id="app">  
                 {this.content()}
             </div>
@@ -48,8 +48,8 @@ class Head extends React.Component<{path: string, assets: {[key: string]: string
             <meta name="twitter:card" content="summary_large_image"/>
 
             <meta property="og:locale" content="en_US"/>
-            <meta property="og:site_name" content="Jaiden Mispy"/>
-            <meta property="og:title" content="Jaiden Mispy"/>
+            <meta property="og:site_name" content="Jaiden Mica"/>
+            <meta property="og:title" content="Jaiden Mica"/>
             <meta property="og:url" content={"https://mispy.me" + path}/>
             <meta property="og:description" content={description}/>
             <meta property="og:image" content={"https://mispy.me/" + sunflowerImg}/>

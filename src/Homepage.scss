@@ -109,8 +109,8 @@
 @media (min-width: 901px) {
 	.homepage {
 		section:not(.sunflowerSection) {
-			min-width: 500px;
-			max-width: 500px;
+			min-width: 32rem;
+			max-width: 32rem;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;

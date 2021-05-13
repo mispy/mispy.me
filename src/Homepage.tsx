@@ -13,21 +13,21 @@ const sunflowerImg = require('./sunflower.png')
 @observer
 export default class Homepage extends React.Component<{ assets: { [key: string]: string } }> {
     render() {
-        const description = `Hi, I'm Mispy! I work part-time as a freelance web developer, and in my spare hours I do some projects you can find on this site.`
+        const description = `Hi, I'm Jaiden (also known as Mispy)! I work part-time as a freelance web developer, and in my spare hours I do some projects you can find on this site.`
 
         return <main className={styles.homepage}>
-            <Metas title="Mispy" description={description} path="/" img={"https://mispy.me/" + sunflowerImg} />
+            <Metas title="Jaiden Mica" description={description} path="/" img={"https://mispy.me/" + sunflowerImg} />
             <section className="intro">
                 <div>
-                    <h1>Mispy</h1>
-                    <p>Hi, I'm Mispy! I work part-time as a freelance web developer, and in my spare hours I do some projects you can find on this site. I have a loose background in science (originally studied biology).</p>
+                    <h1>Jaiden Mica</h1>
+                    <p>Hi, I'm Jaiden (also known as Mispy)! I work part-time as a freelance web developer, and in my spare hours I do some projects here. I originally studied biology at university.</p>
                     <p>I try to lead a peaceful life filled with quiet compassion and playful curiosity, and I think it would be nice to make this an achievable option for everyone.</p>
-                    <p>In the past, I worked with researchers at the University of Oxford to build the technical infrastructure of <a href="https://ourworldindata.org/">Our World in Data</a>.</p>
-                    <p>I'm a little shy, but I like to make cute new internet friends, so feel free to send me a message!</p>
+                    <p>In the past, I worked with researchers at the University of Oxford to build a bunch of the initial structure of <a href="https://ourworldindata.org/">Our World in Data</a>.</p>
+                    <p>I'm a little shy, but I like to make cool new internet friends (and sometimes travel to meet them!), so feel free to send me a message.</p>
                 </div>
                 <footer>
                     <div>
-                        <a href="mailto:mispy@mispy.me">mispy@mispy.me</a>  •  <a href="https://twitter.com/mispy11">@mispy11</a>  •  <a href="https://github.com/mispy">GitHub</a>
+                        <a href="mailto:jaiden@mispy.me">jaiden@mispy.me</a>  •  <a href="https://twitter.com/m1spy">@m1spy</a>  •  <a href="https://github.com/mispy">GitHub</a>
                     </div>
                     <div>Here is a button I made for you:  <HeartButton/></div>
                 </footer>

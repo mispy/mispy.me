@@ -15,6 +15,12 @@ html {
 	box-sizing: border-box;
 }
 
+@media (max-height: 800px) {
+	html {
+		font-size: 1.75vh;
+	}
+}
+
 @media (max-width: 900px) {
 	html {
 		font-size: 14px;
