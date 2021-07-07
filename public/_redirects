@@ -6,3 +6,4 @@
 /aoc-wires/* https://mispy-aoc-wires.netlify.app/aoc-wires/:splat 200
 /aoc-orbits https://mispy-aoc-orbits.netlify.app/aoc-orbits 200
 /aoc-orbits/* https://mispy-aoc-orbits.netlify.app/aoc-orbits/:splat 200
+/ https://github.com/mispy 302!

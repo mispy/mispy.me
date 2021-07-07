@@ -28,7 +28,7 @@ export default class Post extends React.Component<{slug: string, assets: {[key: 
                 <link rel="stylesheet" type="text/css" href={`/${assets['posts.css']}`}/>  
             </Metas>
             <header>
-                <Link to="/"><img className="profile" src={mispy} alt="Jaiden Mispy"/></Link>
+                <Link to="/"><img className="profile" src={mispy} alt="Mispy"/></Link>
             </header>
             <article>
                 <time dateTime={date}>{moment(date).format('DD MMMM YYYY')}</time>
@@ -37,7 +37,7 @@ export default class Post extends React.Component<{slug: string, assets: {[key: 
             </article>
             <footer>
                 <section className="author">
-                    <h4>Jaiden Mispy</h4>
+                    <h4>Mispy</h4>
                     <ul>
                         <li>Perth, Australia</li>
                         <li><a href="/">https://mispy.me</a></li>

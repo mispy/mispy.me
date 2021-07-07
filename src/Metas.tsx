@@ -19,8 +19,8 @@ export class Metas extends React.Component<{ path: string, title: string, descri
             {img && <meta name="twitter:card" content="summary_large_image"/>}
 
             <meta property="og:locale" content="en_US"/>
-            <meta property="og:site_name" content="Jaiden Mispy"/>
-            <meta property="og:title" content="Jaiden Mispy"/>
+            <meta property="og:site_name" content="Mispy"/>
+            <meta property="og:title" content="Mispy"/>
             <meta property="og:url" content={"https://mispy.me" + path}/>
             <meta property="og:description" content={description}/>
             {img && <meta property="og:image" content={img}/>}
